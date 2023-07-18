@@ -1,0 +1,304 @@
+<template>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card border-0 rounded shadow">
+                    <div class="card-body">
+                        <h4>DATA POST</h4>
+                        <hr>
+                        <router-link :to="{name: 'post.create'}" class="btn btn-md btn-success">TAMBAH POST</router-link>
+
+                        <table class="table table-striped table-bordered mt-4">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">TITLE</th>
+                                    <th scope="col">CONTENT</th>
+                                    <th scope="col">OPTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(post, index) in posts" :key="index">
+                                    <td>{{ post.title }}</td>
+                                    <td>{{ post.content }}</td>
+                                    <td class="text-center">
+                                        <router-link :to="{name: 'post.edit', params:{id: post.id }}" class="btn btn-sm btn-primary mr-1">EDIT</router-link>
+                                        <button @click.prevent="postDelete(post.id)" class="btn btn-sm btn-danger ml-1">DELETE</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</template>
+
+<script>
+import axios from 'axios'
+import { onMounted, ref } from 'vue'
+
+export default {
+
+    setup() {
+
+        //reactive state
+        let posts = ref([])
+
+        //mounted
+        onMounted(() => {
+
+            //get API from Laravel Backend
+            axios.get('http://localhost:8000/api/post')
+            .then(response => {
+              
+              //assign state posts with response data
+              posts.value = response.data.data
+
+            }).catch(error => {
+                console.log(error.response.data)
+            })
+
+        })
+        //method delete
+function postDelete(id) {
+            
+   //delete data post by ID
+   axios.delete(`http://localhost:8000/api/post/${id}`)
+   .then(() => {
+              
+       //splice posts 
+       posts.value.splice(posts.value.indexOf(id), 1);
+
+    }).catch(error => {
+        console.log(error.response.data)
+    })
+
+}
+
+//return
+return {
+   posts,
+   postDelete
+}
+
+    }
+
+}
+</script>
+
+<style scoped>
+/* font-family: 'Nunito Sans', sans-serif;
+font-family: 'Roboto', sans-serif; */
+
+
+html, body{
+    min-height:100%;
+}
+
+
+body{
+    margin: 0;
+    background: url(../../../img/white-poly.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+   
+
+}
+
+.txt1 {
+    font-size: 15px;
+    line-height: 1.4;
+    color: #999999;
+}
+
+.txt2 {
+    font-size: 15px;
+    line-height: 1.4;
+    color: #426fb1;
+    text-decoration: none;
+}
+
+.kembali-konten {
+    text-align: left;
+    padding-top: 20px;
+}
+
+
+
+.txt3 {
+    font-size: 15px;
+    line-height: 1.4;
+    color: #999999;
+    text-decoration: none;
+}
+
+.text-center{
+    background: none;
+}
+.login-container{
+    position: relative;
+    min-height: 100vh;
+}
+.yst-login-box{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 480px;
+    box-shadow: 10px 10px 10px -10px rgba(100,100,100,0.59);
+-webkit-box-shadow: 10px 10px 10px -10px rgba(100,100,100,0.59);
+-moz-box-shadow: 10px 10px 10px -10px rgba(100,100,100,0.59);
+    height: 420px;
+    border-radius: 15px;
+    background: #fcfcfc;
+}
+
+.yst-regis-box{
+    margin: auto;
+    max-width: 500px;
+    padding-top: 1vh;
+    box-shadow: 10px 10px 10px -10px rgba(100,100,100,0.59);
+-webkit-box-shadow: 10px 10px 10px -10px rgba(100,100,100,0.59);
+-moz-box-shadow: 10px 10px 10px -10px rgba(100,100,100,0.59);
+    height: auto;
+    border-radius: 15px;
+    background: #fcfcfc;
+}
+
+.yst-regis-width{
+    max-width:90%;
+    margin: auto;
+}
+
+.yst-login-width{
+    max-width:75%;
+    margin: auto;
+}
+
+.yst-login-box h1{
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 600;
+ 
+}
+
+.yst-login-title{
+    color: #424242;
+    font-weight: bold;
+    
+}
+
+.yst-login-title2{
+    color: #ee2e24;
+    font-weight: bold;
+    font-family: 'Quicksand', sans-serif;
+}
+
+input[type="email"]{
+    border-color: #c9ccd0;
+    border-radius : 5px;
+}
+
+input[type="password"]{
+    border-color: #c9ccd0;
+    border-radius : 5px;
+}
+
+
+.yst-login-btn{
+    background: rgb(147,16,23);
+    background: linear-gradient(45deg, rgba(147,16,23,1) 0%, rgba(229,19,29,1) 100%);  
+    font-family: 'Quicksand', sans-serif; 
+}
+
+.yst-login-btn-fs{
+    font-size: 17px;
+    letter-spacing: 0.5px;
+    
+}
+
+.regis-title{
+    border-bottom: 0.5px solid #d8d8d8;
+    margin-bottom: 20px;
+}
+
+.regis-title h3{
+    margin-bottom: 4vh;
+    text-align: center;
+    color:#4f4f4e;
+    font-family: Nunito, sans-serif;
+}
+
+.radio-wrapper{
+    float: left;
+    padding: 1vh 1.5vh 1vh 1.5vh;
+    color: #6c757d;
+    margin-right: 20px;
+    border: 1px solid #c9ccd0;
+    border-radius: 6px;
+}
+
+.radio-wrapper2{
+    float: left;
+    padding: 1vh 1.5vh 1vh 1.5vh;
+    color: #6c757d;
+    border: 1px solid #c9ccd0;
+    border-radius: 6px;
+}
+
+.label-form-span{
+    color: #60686e;
+    font-family: Nunito, sans-serif ;
+}
+
+
+
+/* SMARTPHONE */
+/* Portrait */
+@media only screen 
+  and (min-device-width: 360px) 
+  and (max-device-width: 812px) 
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: portrait) { 
+
+    .yst-login-box{
+        margin: auto;
+        max-width: 83%;
+        height: 380px;
+        margin-left: 20px;
+    }
+
+    .yst-login-width{
+        max-width:88%;
+        margin: auto;
+    }
+
+    .yst-login-box h1{
+        font-size: 20px;
+    }
+    
+    .yst-login-box img{
+        height:80px;
+    }
+
+    .yst-login-btn-fs{
+        font-size: 15px;
+        letter-spacing: 0.5px;
+        
+    }
+
+
+}
+
+/* Landscape */
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 812px) 
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: landscape) { 
+    
+}
+</style>
