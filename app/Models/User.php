@@ -27,7 +27,9 @@ class User extends Authenticatable
         'jenis_kelamin',
         'is_die',
         'level_user',
-        'jabatan'
+        'jabatan',
+        'no_hp',
+        'username'
         
     ];
 

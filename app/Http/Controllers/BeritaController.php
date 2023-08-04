@@ -50,24 +50,37 @@ class BeritaController extends Controller
         ];
     }
 
-    public function UpdateBerita(Request $request,$id_berita)
+    public function UpdateBerita(Request $request, $id_berita)
     {
-        $berita = Berita::find($id_berita);
-        if ($berita) {
-        // Update status_berita menjadi 1
-        $berita->update(['status_berita' => 1]);
-
-        return response()->json([
-            'message' => 'Status berita berhasil diupdate menjadi 1',
-            'data' => $berita
+        
+        $request->validate([
+            'judul_berita' => 'required',
+            'tgl_kejadian' => 'required',
+            'isi_berita' => 'required',
+            'gambar_berita' => 'required',
+            'kategori_berita' => 'required',
+            'tgl_penulisan' => 'required',   
         ]);
-         } else {
-        return response()->json([
-            'message' => 'Berita tidak ditemukan',
-        ], 404);
-    }
 
+            $berita = Berita::find($id_berita);
+            $berita->judul_berita = $request->judul_berita;
+            $berita->tgl_kejadian = $request->tgl_kejadian;
+            $berita->isi_berita = $request->isi_berita;
+            $berita->gambar_berita = $request->gambar_berita;
+            $berita->kategori_berita = $request->kategori_berita;
+            $berita->tgl_penulisan = $request->tgl_penulisan;
+            $berita->save();
+       
+
+
+        return response()->json([
+            'message' => 'Berita berhasil diperbarui',
+            'data' => $berita
+        ], 200);
     }
+    
+
+
 
     public function deleteBerita($id_berita)
     {

@@ -25,6 +25,9 @@
             <input type="text" name="email" v-model="user.email" id="email" placeholder="Email" class="form-control" Required>
           </div>
           <div class="form-group mt-4 mb-2">
+            <input type="text" name="no_hp" v-model="user.no_hp" id="no_hp" placeholder="no_hp" class="form-control" Required>
+          </div>
+          <div class="form-group mt-4 mb-2">
             <select
             name="wilayah_id"
             v-model="user.wilayah_id"
@@ -40,12 +43,33 @@
             </option>
           </select>
         </div>
+        <div class="form-group mt-4 mb-2">
+            <input type="text" name="username" v-model="user.username" id="username" placeholder="username" class="form-control" Required>
+          </div>
           <div class="form-group mt-4 mb-2">
             <input type="password" name="password" v-model="user.password" id="password" placeholder="Password" class="form-control" Required>
           </div>
           <div class="form-group mt-4 mb-2">
             <input type="password" name="password_confirmation" v-model="user.password_confirmation" id="password_confirmation" placeholder="Enter Password" class="form-control" Required>
           </div>
+          <div class="form-group">
+          <label>Jenis Kelamin:</label>
+          <div class="form-check">
+            <input type="radio" id="laki-laki" name="jenis_kelamin" value="l" v-model="user.jenis_kelamin" class="form-check-input" required>
+            <label for="laki-laki" class="form-check-label">Laki-laki</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="wanita" name="jenis_kelamin" value="p" v-model="user.jenis_kelamin" class="form-check-input" required>
+            <label for="wanita" class="form-check-label">Perempuan</label>
+          </div>
+        </div>
+
+
+
+
+
+
+
           <div class="mb-2">
             <button type="submit" :disabled="processing" class="btn btn-lg btn-primary w-100 yst-login-btn border-0 mt-4 mb-5">
               <span class="yst-login-btn-fs">{{ processing ? "Please wait" : "Daftar" }}</span>
@@ -73,6 +97,10 @@ export default {
         password: "",
         password_confirmation: "",
         wilayah_id: "",
+        no_hp:"",
+        username:"",
+        jenis_kelamin:"",
+
       },
       validationErrors: {},
       processing: false,

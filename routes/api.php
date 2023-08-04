@@ -26,11 +26,35 @@ Route::get('/get-wilayahs', [WilayahController::class, 'getWilayahs']);
 // api untuk crud berita
 Route::get('/berita', [BeritaController::class, 'getBerita']);
 Route::post('/berita', [BeritaController::class, 'CreateBerita']);
-Route::put('/berita/{id}', [BeritaController::class, 'UpdateBerita']);
+Route::patch('/berita/{id}', [BeritaController::class, 'UpdateBerita']);
 Route::delete('/berita/{id}', [BeritaController::class, 'deleteBerita']);
 
+// api untuk userAktif
+Route::get('/userAktif', [UserController::class, 'getUserAktif']);
+Route::put('/userAktif/{id}', [UserController::class, 'updateUser']);
+Route::delete('/userAktif/{id}', [UserController::class, 'deleteUser']);
+
+// 
+Route::get('/userMeninggal', [MeninggalController::class, 'getMeninggal']);
+Route::post('/userMeninggal', [MeninggalController::class, 'Createmeninggal']);
+Route::patch('/userMeninggal/{id}', [MeninggalController::class, 'updateMeninggal']);
+Route::delete('/userMeninggal/{id}', [MeninggalController::class, 'deleteMeninggal']);
 
 
+Route::get('/plafonBeasiswa', [PlafonBeasiswaController::class, 'getPlafonBeasiswa']);
+Route::patch('/plafonBeasiswa/{id}', [PlafonBeasiswaController::class, 'updatePlafonBeasiswa']);
+
+
+Route::get('/kategoriDonasi', [KategoriDonasiController::class, 'getkategoriDonasi']);
+Route::post('/kategoriDonasi', [KategoriDonasiController::class, 'CreateKategoriDonasi']);
+Route::patch('/kategoriDonasi/{id}', [KategoriDonasiController::class, 'updatekategoriDonasi']);
+Route::delete('/kategoriDonasi/{id}', [KategoriDonasiController::class, 'deleteDonasi']);
+
+
+Route::get('/kategoriRelawan', [KategoriRelawanController::class, 'getkategoriRelawan']);
+Route::post('/kategoriRelawan', [KategoriRelawanController::class, 'CreateKategoriRelawan']);
+Route::patch('/kategoriRelawan/{id}', [KategoriRelawanController::class, 'updatekategoriRelawan']);
+Route::delete('/kategoriRelawan/{id}', [KategoriRelawanController::class, 'deleteKategoriRelawan']);
 
 
 
