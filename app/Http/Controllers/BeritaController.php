@@ -68,7 +68,7 @@ class BeritaController extends Controller
             $berita->isi_berita = $request->isi_berita;
             $berita->gambar_berita = $request->gambar_berita;
             $berita->kategori_berita = $request->kategori_berita;
-            $berita->tgl_penulisan = $request->tgl_penulisan;
+            $berita->tgl_penulisan  = $request->tgl_penulisan ;
             $berita->save();
        
 

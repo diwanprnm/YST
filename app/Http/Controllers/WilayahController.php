@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 
 class WilayahController extends Controller
 {
+
+   
+
     public function getWilayahs()
     {
         $wilayahs = Wilayah::all();

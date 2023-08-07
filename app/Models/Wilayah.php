@@ -10,6 +10,7 @@ class Wilayah extends Model
     use HasFactory;
     protected $table = 't_wilayah';
     protected $guarded = ['id_wilayah'];
+    protected $primarykey = 'id_wilayah';
 
 
 }

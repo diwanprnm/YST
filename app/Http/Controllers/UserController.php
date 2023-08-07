@@ -6,6 +6,14 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        // Menerapkan middleware 'auth:sanctum' hanya pada beberapa fungsi
+        $this->middleware('auth:sanctum')->only(['getUserAktif', 'updateUser','deleteUser']);
+    }
+
+
     public function getUserAktif()
     {
         

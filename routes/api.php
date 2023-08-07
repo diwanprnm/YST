@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,50 +19,56 @@ use App\Http\Controllers\WilayahController;
 |
 */
 
-//api post
-Route::resource('/post', PostController::class);
-
-// api untuk get wilayah
 Route::get('/get-wilayahs', [WilayahController::class, 'getWilayahs']);
 
-// api untuk crud berita
-Route::get('/berita', [BeritaController::class, 'getBerita']);
-Route::post('/berita', [BeritaController::class, 'CreateBerita']);
-Route::patch('/berita/{id}', [BeritaController::class, 'UpdateBerita']);
-Route::delete('/berita/{id}', [BeritaController::class, 'deleteBerita']);
+Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/login', [RegisterController::class, 'login']);
 
-// api untuk userAktif
-Route::get('/userAktif', [UserController::class, 'getUserAktif']);
-Route::put('/userAktif/{id}', [UserController::class, 'updateUser']);
-Route::delete('/userAktif/{id}', [UserController::class, 'deleteUser']);
+Route::middleware('auth:sanctum')->group( function () {
+    //api post
+    
+    Route::post('/logout', [RegisterController::class, 'logout']);
+    Route::resource('/post', PostController::class);
+    // api untuk get wilayah
+    
+    // api untuk crud berita
+    Route::get('/berita', [BeritaController::class, 'getBerita']);
+    Route::post('/berita', [BeritaController::class, 'CreateBerita']);
+    Route::patch('/berita/{id}', [BeritaController::class, 'UpdateBerita']);
+    Route::delete('/berita/{id}', [BeritaController::class, 'deleteBerita']);
+    
+    // api untuk userAktif
+    Route::get('/userAktif', [UserController::class, 'getUserAktif']);
+    Route::put('/userAktif/{id}', [UserController::class, 'updateUser']);
+    Route::delete('/userAktif/{id}', [UserController::class, 'deleteUser']);
+    
+    // 
+    Route::get('/userMeninggal', [MeninggalController::class, 'getMeninggal']);
+    Route::post('/userMeninggal', [MeninggalController::class, 'Createmeninggal']);
+    Route::patch('/userMeninggal/{id}', [MeninggalController::class, 'updateMeninggal']);
+    Route::delete('/userMeninggal/{id}', [MeninggalController::class, 'deleteMeninggal']);
+    
+    
+    Route::get('/plafonBeasiswa', [PlafonBeasiswaController::class, 'getPlafonBeasiswa']);
+    Route::patch('/plafonBeasiswa/{id}', [PlafonBeasiswaController::class, 'updatePlafonBeasiswa']);
+    
+    
+    Route::get('/kategoriDonasi', [KategoriDonasiController::class, 'getkategoriDonasi']);
+    Route::post('/kategoriDonasi', [KategoriDonasiController::class, 'CreateKategoriDonasi']);
+    Route::patch('/kategoriDonasi/{id}', [KategoriDonasiController::class, 'updatekategoriDonasi']);
+    Route::delete('/kategoriDonasi/{id}', [KategoriDonasiController::class, 'deleteDonasi']);
+    
+    
+    Route::get('/kategoriRelawan', [KategoriRelawanController::class, 'getkategoriRelawan']);
+    Route::post('/kategoriRelawan', [KategoriRelawanController::class, 'CreateKategoriRelawan']);
+    Route::patch('/kategoriRelawan/{id}', [KategoriRelawanController::class, 'updatekategoriRelawan']);
+    Route::delete('/kategoriRelawan/{id}', [KategoriRelawanController::class, 'deleteKategoriRelawan']);
 
-// 
-Route::get('/userMeninggal', [MeninggalController::class, 'getMeninggal']);
-Route::post('/userMeninggal', [MeninggalController::class, 'Createmeninggal']);
-Route::patch('/userMeninggal/{id}', [MeninggalController::class, 'updateMeninggal']);
-Route::delete('/userMeninggal/{id}', [MeninggalController::class, 'deleteMeninggal']);
-
-
-Route::get('/plafonBeasiswa', [PlafonBeasiswaController::class, 'getPlafonBeasiswa']);
-Route::patch('/plafonBeasiswa/{id}', [PlafonBeasiswaController::class, 'updatePlafonBeasiswa']);
-
-
-Route::get('/kategoriDonasi', [KategoriDonasiController::class, 'getkategoriDonasi']);
-Route::post('/kategoriDonasi', [KategoriDonasiController::class, 'CreateKategoriDonasi']);
-Route::patch('/kategoriDonasi/{id}', [KategoriDonasiController::class, 'updatekategoriDonasi']);
-Route::delete('/kategoriDonasi/{id}', [KategoriDonasiController::class, 'deleteDonasi']);
-
-
-Route::get('/kategoriRelawan', [KategoriRelawanController::class, 'getkategoriRelawan']);
-Route::post('/kategoriRelawan', [KategoriRelawanController::class, 'CreateKategoriRelawan']);
-Route::patch('/kategoriRelawan/{id}', [KategoriRelawanController::class, 'updatekategoriRelawan']);
-Route::delete('/kategoriRelawan/{id}', [KategoriRelawanController::class, 'deleteKategoriRelawan']);
-
-
-
-
-
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
 });
+
+
+
+
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });

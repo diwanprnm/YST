@@ -1,88 +1,83 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+   
+use Illuminate\Http\Request;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\Models\User;
-use App\Models\Wilayah;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
-
-
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Validator;
+   
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
-
     /**
-     * Where to redirect users after registration.
+     * Register api
      *
-     * @var string
+     * @return \Illuminate\Http\Response
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function register(Request $request)
     {
-        $this->middleware('guest');
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'nik' => ['required', 'string'],
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
-    protected function create(array $data)
-    {
-
-        return User::create([
-            'status_user' => 'y',
-            'is_die' => 'n', 
-            'level_user' => '4',
-            'jenis_kelamin' => $data['jenis_kelamin'],
-            'nik' => $data['nik'],
-            'username' => $data['username'],
-            'no_hp' => $data['no_hp'],
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'wilayah_id' => $data['wilayah_id'],    
-
-        ]);
         
+   
+        $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
+        $input['status_user'] = 'y';
+        $input['is_die'] = 'n';
+        
+        $user = User::create($input);
+        $success['token'] =  $user->createToken('MyApp')->plainTextToken;
+        $success['name'] =  $user->name;
+   
+        return response()->json([
+            'message' => 'Data register berhasil ',
+            'data' => $success
+        ]);    }
+   
+    /**
+     * Login api
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+    
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $token = $user->createToken('MyApp')->plainTextToken;
+    
+            return response()->json([
+                'message' => 'Login berhasil',
+                'token' => $token,
+                'name' => $user->name
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Login gagal',
+            ], 401);
+        }
     }
+    
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+    
+        if ($user) {
+            $user->currentAccessToken()->delete();
+    
+            return response()->json([
+                'message' => 'Logout berhasil',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Tidak ada pengguna yang diotentikasi',
+            ], 400);
+        }
+    }
+    
+
+
+
 }
