@@ -19,8 +19,18 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required|confirmed|min:6',
+            'username' => 'required',
+            'name' => 'required',
+            'nik' => 'required',
+            'wilayah_id' => 'required',
+            'no_hp' => 'required',
+            'jenis_kelamin' => 'required',
+        ]);
    
+
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $input['status_user'] = 'y';
@@ -42,6 +52,13 @@ class RegisterController extends Controller
      */
     public function login(Request $request)
     {
+
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required'
+             
+        ]);
+
         $credentials = $request->only('email', 'password');
     
         if (Auth::attempt($credentials)) {

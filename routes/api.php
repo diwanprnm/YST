@@ -63,7 +63,24 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/kategoriRelawan', [KategoriRelawanController::class, 'CreateKategoriRelawan']);
     Route::patch('/kategoriRelawan/{id}', [KategoriRelawanController::class, 'updatekategoriRelawan']);
     Route::delete('/kategoriRelawan/{id}', [KategoriRelawanController::class, 'deleteKategoriRelawan']);
+    
+    
+    Route::get('/beasiswa', [BeasiswaController::class, 'getBeasiswa']);
+    Route::post('/beasiswa', [BeasiswaController::class, 'CreateBeasiswa']);
+    Route::patch('/beasiswa/{id}', [BeasiswaController::class, 'updateBeasiswa']);
+    Route::delete('/beasiswa/{id}', [BeasiswaController::class, 'deleteBeasiswa']);
+    
 
+    Route::get('/programDonasi', [ProgramDonasiController::class, 'getProgramDonasi']);
+    Route::post('/programDonasi', [ProgramDonasiController::class, 'createProgramDonasi']);
+    Route::patch('/programDonasi/{id}', [ProgramDonasiController::class, 'updateProgramDonasi']);
+    Route::delete('/programDonasi/{id}', [ProgramDonasiController::class, 'deleteProgramDonasi']);
+    
+    
+    Route::get('/programRelawan', [ProgramRelawanController::class, 'getProgramRelawan']);
+    Route::post('/programRelawan', [ProgramRelawanController::class, 'createProgramRelawan']);
+    Route::patch('/programRelawan/{id}', [ProgramRelawanController::class, 'updateProgramRelawan']);
+    Route::delete('/programRelawan/{id}', [ProgramRelawanController::class, 'deleteProgramRelawan']);
 });
 
 
