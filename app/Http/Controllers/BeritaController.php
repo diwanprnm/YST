@@ -10,7 +10,17 @@ class BeritaController extends Controller
 {
     public function getBerita()
     {
-        $berita = Berita::all();
+        $berita = Berita::where('kategori_berita' ,'1')->get();
+        return [
+            "status" => 1,
+            "data" => $berita
+        ];
+        
+    }
+
+    public function getKegiatan()
+    {
+        $berita = Berita::where('kategori_berita' ,'0')->get();
         return [
             "status" => 1,
             "data" => $berita

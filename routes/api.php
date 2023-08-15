@@ -23,6 +23,9 @@ Route::get('/get-wilayahs', [WilayahController::class, 'getWilayahs']);
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [RegisterController::class, 'login']);
+Route::get('/berita', [BeritaController::class, 'getBerita']);
+Route::get('/kegiatan', [BeritaController::class, 'getKegiatan']);
+
 
 Route::middleware('auth:sanctum')->group( function () {
     //api post
@@ -32,7 +35,6 @@ Route::middleware('auth:sanctum')->group( function () {
     // api untuk get wilayah
     
     // api untuk crud berita
-    Route::get('/berita', [BeritaController::class, 'getBerita']);
     Route::post('/berita', [BeritaController::class, 'CreateBerita']);
     Route::patch('/berita/{id}', [BeritaController::class, 'UpdateBerita']);
     Route::delete('/berita/{id}', [BeritaController::class, 'deleteBerita']);
