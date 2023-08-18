@@ -16,6 +16,24 @@ class ProgramRelawanController extends Controller
         ];
     }
 
+    public function getProgramRelawanById($id)
+    {
+        $program_relawan = ProgramRelawan::find($id);
+
+        if (!$program_relawan) {
+            return [
+                "status" => 0,
+                "message" => "Program Relawan not found"
+            ];
+        }
+
+        return [
+            "status" => 1,
+            "data" => $program_relawan
+        ];
+    }
+
+
     public function createProgramRelawan(Request $request)
     {
         

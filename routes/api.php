@@ -23,8 +23,23 @@ Route::get('/get-wilayahs', [WilayahController::class, 'getWilayahs']);
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [RegisterController::class, 'login']);
+
+// api untuk berita
 Route::get('/berita', [BeritaController::class, 'getBerita']);
+Route::get('/berita/{id}', [BeritaController::class, 'getBeritaById']);
+
+// api untuk Kegiatan
 Route::get('/kegiatan', [BeritaController::class, 'getKegiatan']);
+Route::get('/kegiatan/{id}', [BeritaController::class, 'getKegiatanById']);
+
+// api untuk Program Donasi
+Route::get('/programDonasi', [ProgramDonasiController::class, 'getProgramDonasi']);
+Route::get('/programDonasi/{id}', [ProgramDonasiController::class, 'getProgramDonasiById']);
+
+
+// api untuk Program Relawan
+Route::get('/programRelawan', [ProgramRelawanController::class, 'getProgramRelawan']);
+Route::get('/programRelawan/{id}', [ProgramRelawanController::class, 'getProgramRelawanById']);
 
 
 Route::middleware('auth:sanctum')->group( function () {
@@ -73,13 +88,11 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::delete('/beasiswa/{id}', [BeasiswaController::class, 'deleteBeasiswa']);
     
 
-    Route::get('/programDonasi', [ProgramDonasiController::class, 'getProgramDonasi']);
     Route::post('/programDonasi', [ProgramDonasiController::class, 'createProgramDonasi']);
     Route::patch('/programDonasi/{id}', [ProgramDonasiController::class, 'updateProgramDonasi']);
     Route::delete('/programDonasi/{id}', [ProgramDonasiController::class, 'deleteProgramDonasi']);
     
     
-    Route::get('/programRelawan', [ProgramRelawanController::class, 'getProgramRelawan']);
     Route::post('/programRelawan', [ProgramRelawanController::class, 'createProgramRelawan']);
     Route::patch('/programRelawan/{id}', [ProgramRelawanController::class, 'updateProgramRelawan']);
     Route::delete('/programRelawan/{id}', [ProgramRelawanController::class, 'deleteProgramRelawan']);

@@ -28,6 +28,43 @@ class BeritaController extends Controller
         
     }
 
+    public function getBeritaById($id)
+    {
+        $berita = Berita::where('kategori_berita', '1')->find($id);
+
+        if (!$berita) {
+            return [
+                "status" => 0,
+                "message" => "Berita not found"
+            ];
+        }
+
+        return [
+            "status" => 1,
+            "data" => $berita
+        ];
+    }
+
+    public function getKegiatanById($id)
+    {
+        $kegiatan = Berita::where('kategori_berita', '0')->find($id);
+
+        if (!$kegiatan) {
+            return [
+                "status" => 0,
+                "message" => "Kegiatan not found"
+            ];
+        }
+
+        return [
+            "status" => 1,
+            "data" => $kegiatan
+        ];
+    }
+
+
+    
+
     public function CreateBerita(Request $request)
     {
         $request->validate([

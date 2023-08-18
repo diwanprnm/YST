@@ -16,6 +16,25 @@ class ProgramDonasiController extends Controller
         ];
     }
 
+    public function getProgramDonasiById($id)
+{
+    $program_donasi = ProgramDonasi::find($id);
+
+    if (!$program_donasi) {
+        return [
+            "status" => 0,
+            "message" => "Program Donasi tidak ditemukan."
+        ];
+    }
+
+    return [
+        "status" => 1,
+        "data" => $program_donasi
+    ];
+}
+
+
+
     public function createProgramDonasi(Request $request)
     {
         
