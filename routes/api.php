@@ -96,6 +96,14 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/programRelawan', [ProgramRelawanController::class, 'createProgramRelawan']);
     Route::patch('/programRelawan/{id}', [ProgramRelawanController::class, 'updateProgramRelawan']);
     Route::delete('/programRelawan/{id}', [ProgramRelawanController::class, 'deleteProgramRelawan']);
+
+
+    Route::get('/donasi', [DonasiController::class, 'getDonasi']);
+    Route::post('/donasi', [DonasiController::class, 'CreateDonasi']);
+    
+    Route::get('/relawan', [RelawanController::class, 'getRelawan']);
+    Route::post('/relawan', [RelawanController::class, 'CreateRelawan']);
+
 });
 
 
