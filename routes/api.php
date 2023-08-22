@@ -34,6 +34,7 @@ Route::get('/kegiatan/{id}', [BeritaController::class, 'getKegiatanById']);
 
 // api untuk Program Donasi
 Route::get('/programDonasi', [ProgramDonasiController::class, 'getProgramDonasi']);
+Route::get('/programDonasi/paginate', [ProgramDonasiController::class, 'getProgramDonasiPaginate']);
 Route::get('/programDonasi/{id}', [ProgramDonasiController::class, 'getProgramDonasiById']);
 
 Route::get('/artikel', [BeritaController::class, 'getArtikel']);

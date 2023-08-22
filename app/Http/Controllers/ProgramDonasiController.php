@@ -37,6 +37,35 @@ class ProgramDonasiController extends Controller
     }
 }
 
+public function getProgramDonasiPaginate(Request $request)
+{
+    $status = $request->input('status_program_donasi');
+
+    $query = ProgramDonasi::query();
+
+    if ($status !== null) {
+        $query->where('status_program_donasi', $status);
+    }
+
+    $data = $query->orderBy('created_at', 'desc')->paginate(3); // Urutkan dan paginasi data dengan 3 data per halaman
+    $responseData = $data->map(function ($item) {
+        $item['foto_p_donasi'] = asset('foto/Programdonasi/' . $item['foto_p_donasi']);
+        return $item;
+    });
+
+    if ($status !== null) {
+        return [
+            "status" => 1,
+            "filtered_data" => $responseData
+        ];
+    } else {
+        return [
+            "status" => 1,
+            "data" => $responseData
+        ];
+    }
+}
+
     public function getProgramDonasiById($id)
 {
     $program_donasi = ProgramDonasi::find($id);
