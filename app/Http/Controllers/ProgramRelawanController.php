@@ -47,7 +47,7 @@ class ProgramRelawanController extends Controller
                 "message" => "Program Relawan not found"
             ];
         }
-        $program_relawan['foto_p_relawan'] = asset('foto/Programdonasi/' . $program_relawan['foto_p_relawan']);
+        $program_relawan['foto_p_relawan'] = asset('foto/Programrelawan/' . $program_relawan['foto_p_relawan']);
 
 
         return [
