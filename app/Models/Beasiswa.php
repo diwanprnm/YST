@@ -11,4 +11,7 @@ class Beasiswa extends Model
     protected $table = 't_beasiswa';
     protected $guarded = ['id_beasiswa'];
     protected $primaryKey = 'id_beasiswa';
+
+    public $timestamps = false; // Nonaktifkan timestamps
+
 }

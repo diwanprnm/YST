@@ -8,13 +8,34 @@ use Illuminate\Support\Facades\File;
 
 class ProgramRelawanController extends Controller
 {
-    public function getProgramRelawan(){
-        $program_relawan = ProgramRelawan::all();
+    public function getProgramRelawan(Request $request)
+    {
+    $status = $request->input('status_program_relawan');
+
+    $query = ProgramRelawan::query();
+
+    if ($status !== null) {
+        $query->where('status_program_relawan', $status);
+    }
+
+    $data = $query->get();
+    $responseData = $data->map(function ($item) {
+        $item['foto_p_relawan'] = asset('foto/Programrelawan/' . $item['foto_p_relawan']);
+        return $item;
+    });
+
+    if ($status !== null) {
         return [
             "status" => 1,
-            "data" => $program_relawan
+            "filtered_data" => $data
+        ];
+    } else {
+        return [
+            "status" => 1,
+            "data" => $data
         ];
     }
+}
 
     public function getProgramRelawanById($id)
     {
@@ -26,6 +47,8 @@ class ProgramRelawanController extends Controller
                 "message" => "Program Relawan not found"
             ];
         }
+        $program_relawan['foto_p_relawan'] = asset('foto/Programdonasi/' . $program_relawan['foto_p_relawan']);
+
 
         return [
             "status" => 1,

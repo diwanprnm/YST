@@ -11,4 +11,7 @@ class AproveBeasiswa extends Model
     protected $table = 't_approval_beasiswa';
     protected $guarded = ['id_approval'];
     protected $primaryKey = 'id_approval';
+
+    public $timestamps = false; // Nonaktifkan timestamps
+
 }

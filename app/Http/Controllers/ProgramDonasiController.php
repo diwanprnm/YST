@@ -8,13 +8,34 @@ use Illuminate\Support\Facades\File;
 
 class ProgramDonasiController extends Controller
 {
-    public function getProgramDonasi(){
-        $program_donasi = ProgramDonasi::all();
+    public function getProgramDonasi(Request $request)
+    {
+    $status = $request->input('status_program_donasi');
+
+    $query = ProgramDonasi::query();
+
+    if ($status !== null) {
+        $query->where('status_program_donasi', $status);
+    }
+
+    $data = $query->get();
+    $responseData = $data->map(function ($item) {
+        $item['foto_p_donasi'] = asset('foto/Programdonasi/' . $item['foto_p_donasi']);
+        return $item;
+    });
+
+    if ($status !== null) {
         return [
             "status" => 1,
-            "data" => $program_donasi
+            "filtered_data" => $data
+        ];
+    } else {
+        return [
+            "status" => 1,
+            "data" => $data
         ];
     }
+}
 
     public function getProgramDonasiById($id)
 {
@@ -26,12 +47,14 @@ class ProgramDonasiController extends Controller
             "message" => "Program Donasi tidak ditemukan."
         ];
     }
+    $program_donasi['foto_p_donasi'] = asset('foto/Programdonasi/' . $program_donasi['foto_p_donasi']);
 
     return [
         "status" => 1,
         "data" => $program_donasi
     ];
 }
+
 
 
 

@@ -1,8 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Beasiswa;
+use App\Models\AproveBeasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class BeasiswaController extends Controller
 {
@@ -94,6 +98,101 @@ class BeasiswaController extends Controller
             ], 404);
         }
     }
+
+    public function approveBeasiswa(Request $request, $id)
+{
+    // Find the beasiswa by its ID
+    $beasiswa = Beasiswa::findOrFail($id);
+
+    $user = Auth::user(); // The logged-in user
+
+    // Check if the user has already given approval
+    $existingApproval = AproveBeasiswa::where('beasiswa_id', $id)
+        ->where('user_id', $user->id)
+        ->first();
+
+    // If the user has not already given approval
+    if (!$existingApproval) {
+        // Create a new approval record
+        $approval = new AproveBeasiswa([
+            'beasiswa_id' => $id,
+            'user_id' => $user->id,
+            'is_approve' => true, // Set approval to true
+            'approved_at' => now(), // Set the approval timestamp
+            'keterangan' => $request->input('keterangan'), // Capture notes from request
+        ]);
+        $approval->save();
+        
+    }
+
+    // Count the number of approvals received
+    $approvalCount = AproveBeasiswa::where('beasiswa_id', $id)->count();
+
+    // If there are at least two approvals, update the beasiswa status
+    if ($approvalCount >= 2) {
+        $beasiswa->is_approve = true; // Set beasiswa status to approved
+        $beasiswa->status = '1'; // Set beasiswa status to approved
+        $beasiswa->approved_at = now(); // Save approval time
+        $beasiswa->approved_by = $user->username; // Save user who gave approval
+        $beasiswa->save();
+    }
+
+    // Return a response indicating the approval status
+    return [
+        "status" => 1,
+        "msg" => "Beasiswa approval process completed"
+    ];
+}
+
+    public function rejectBeasiswa(Request $request, $id)
+    {
+        // Find the beasiswa by its ID
+        $beasiswa = Beasiswa::findOrFail($id);
+
+        $user = Auth::user(); // The logged-in user
+
+        // Check if the user has already given approval
+        $existingApproval = AproveBeasiswa::where('beasiswa_id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        // If the user has not already given approval
+        if (!$existingApproval) {
+            // Create a new approval record
+            $approval = new AproveBeasiswa([
+                'beasiswa_id' => $id,
+                'user_id' => $user->id,
+                'is_approve' => false, // Set approval to true
+                'approved_at' => now(), // Set the approval timestamp
+                'keterangan' => $request->input('keterangan'), // Capture notes from request
+            ]);
+            $approval->save();
+            
+        }
+
+        // Count the number of approvals received
+        $approvalCount = AproveBeasiswa::where('beasiswa_id', $id)->count();
+
+        // If there are at least two approvals, update the beasiswa status
+        if ($approvalCount >= 2) {
+            $beasiswa->is_approve = false; // Set beasiswa status to approved
+            $beasiswa->status = '2'; // Set beasiswa status to approved
+            $beasiswa->approved_at = now(); // Save approval time
+            $beasiswa->approved_by = $user->username; // Save user who gave approval
+            $beasiswa->save();
+        }
+
+        // Return a response indicating the approval status
+        return [
+            "status" => 1,
+            "msg" => "Beasiswa reject process completed"
+        ];
+    }
+
+    
+
+
+    
 
     
 

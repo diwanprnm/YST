@@ -10,15 +10,30 @@ use Illuminate\Support\Facades\Auth;
 
 class DonasiController extends Controller
 {
-    public function getDonasi()
+    public function getDonasi(Request $request)
     {
-        $donasi = Donasi::all();
+    $status = $request->input('status_donasi');
+
+    $query = Donasi::query();
+
+    if ($status !== null) {
+        $query->where('status_donasi', $status);
+    }
+
+    $data = $query->get();
+
+    if ($status !== null) {
         return [
             "status" => 1,
-            "data" => $donasi
+            "filtered_data" => $data
         ];
-        
+    } else {
+        return [
+            "status" => 1,
+            "data" => $data
+        ];
     }
+}
     
     public function CreateDonasi(Request $request)
     {
@@ -37,7 +52,7 @@ class DonasiController extends Controller
         $donasi['status_donasi'] = 2;
 
         $nominalDonasi = $request->input('nominal_donasi');
-        $donasi['belum_dibayar'] = $nominalDonasi;
+        $donasi['belum_dibayar'] = $nominalDonasi + rand(100, 999); // Menambahkan 3 angka acak
 
         $donasi['tgl_donasi'] = now(); // Menggunakan fungsi bawaan PHP untuk mendapatkan waktu saat ini
 
@@ -51,6 +66,25 @@ class DonasiController extends Controller
         ];
     }
 
-  
+    public function approveDonasi(Request $request, $id)
+    {
+        $donasi = Donasi::find($id);
 
+        if (!$donasi) {
+            return [
+                "status" => 0,
+                "msg" => "Donasi not found"
+            ];
+        }
+
+        $donasi->status_donasi = 1;
+        $donasi->save();
+
+        return [
+            "status" => 1,
+            "msg" => "Donasi reject Berhasil"
+        ];
+    }
 }
+
+

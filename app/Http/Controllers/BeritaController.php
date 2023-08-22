@@ -11,19 +11,55 @@ class BeritaController extends Controller
     public function getBerita()
     {
         $berita = Berita::where('kategori_berita' ,'1')->get();
+        $responseData = $berita->map(function ($item) {
+            $item['gambar_berita'] = asset('foto/berita/' . $item['gambar_berita']); // Ganti path dengan path sesuai dengan penyimpanan foto
+            return $item;
+        });
         return [
             "status" => 1,
-            "data" => $berita
+            "data" => $responseData
         ];
         
     }
 
+     public function getArtikel(Request $request)
+    {
+        $status = $request->input('status_berita');
+
+        $query = Berita::query();
+
+        if ($status !== null) {
+            $query->where('status_berita', $status);
+        }
+
+        $data = $query->get();
+
+        if ($status !== null) {
+            return [
+                "status" => 1,
+                "filtered_data" => $data
+            ];
+        } else {
+            return [
+                "status" => 1,
+                "data" => $data
+            ];
+        }
+    }
+
+
+
+
     public function getKegiatan()
     {
         $berita = Berita::where('kategori_berita' ,'0')->get();
+        $responseData = $berita->map(function ($item) {
+            $item['gambar_berita'] = asset('foto/berita/' . $item['gambar_berita']); // Ganti path dengan path sesuai dengan penyimpanan foto
+            return $item;
+        });
         return [
             "status" => 1,
-            "data" => $berita
+            "data" => $responseData
         ];
         
     }
@@ -38,6 +74,8 @@ class BeritaController extends Controller
                 "message" => "Berita not found"
             ];
         }
+        $berita['gambar_berita'] = asset('foto/berita/' . $berita['gambar_berita']);
+
 
         return [
             "status" => 1,
@@ -55,6 +93,8 @@ class BeritaController extends Controller
                 "message" => "Kegiatan not found"
             ];
         }
+        $kegiatan['gambar_berita'] = asset('foto/berita/' . $kegiatan['gambar_berita']);
+
 
         return [
             "status" => 1,

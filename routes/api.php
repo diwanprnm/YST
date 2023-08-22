@@ -36,6 +36,8 @@ Route::get('/kegiatan/{id}', [BeritaController::class, 'getKegiatanById']);
 Route::get('/programDonasi', [ProgramDonasiController::class, 'getProgramDonasi']);
 Route::get('/programDonasi/{id}', [ProgramDonasiController::class, 'getProgramDonasiById']);
 
+Route::get('/artikel', [BeritaController::class, 'getArtikel']);
+
 
 // api untuk Program Relawan
 Route::get('/programRelawan', [ProgramRelawanController::class, 'getProgramRelawan']);
@@ -53,6 +55,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/berita', [BeritaController::class, 'CreateBerita']);
     Route::patch('/berita/{id}', [BeritaController::class, 'UpdateBerita']);
     Route::delete('/berita/{id}', [BeritaController::class, 'deleteBerita']);
+
     
     // api untuk userAktif
     Route::get('/userAktif', [UserController::class, 'getUserAktif']);
@@ -86,7 +89,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/beasiswa', [BeasiswaController::class, 'CreateBeasiswa']);
     Route::patch('/beasiswa/{id}', [BeasiswaController::class, 'updateBeasiswa']);
     Route::delete('/beasiswa/{id}', [BeasiswaController::class, 'deleteBeasiswa']);
-    
+    Route::patch('/beasiswa/approve/{id}', [BeasiswaController::class, 'approveBeasiswa']);
+    Route::patch('/beasiswa/reject/{id}', [BeasiswaController::class, 'rejectBeasiswa']);
 
     Route::post('/programDonasi', [ProgramDonasiController::class, 'createProgramDonasi']);
     Route::patch('/programDonasi/{id}', [ProgramDonasiController::class, 'updateProgramDonasi']);
@@ -100,9 +104,18 @@ Route::middleware('auth:sanctum')->group( function () {
 
     Route::get('/donasi', [DonasiController::class, 'getDonasi']);
     Route::post('/donasi', [DonasiController::class, 'CreateDonasi']);
+    Route::patch('/donasi/{id}', [DonasiController::class, 'approveDonasi']);
+
     
     Route::get('/relawan', [RelawanController::class, 'getRelawan']);
     Route::post('/relawan', [RelawanController::class, 'CreateRelawan']);
+    Route::patch('/relawan/approve/{id}', [RelawanController::class, 'approveRelawan']);
+    Route::patch('/relawan/reject/{id}', [RelawanController::class, 'rejectRelawan']);
+
+    Route::post('/kelolaKonten', [BerandaController::class, 'createOrUpdateBeranda']);
+
+
+
 
 });
 
