@@ -112,8 +112,16 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/relawan', [RelawanController::class, 'CreateRelawan']);
     Route::patch('/relawan/approve/{id}', [RelawanController::class, 'approveRelawan']);
     Route::patch('/relawan/reject/{id}', [RelawanController::class, 'rejectRelawan']);
-
+    
     Route::post('/kelolaKonten', [BerandaController::class, 'createOrUpdateBeranda']);
+    
+    
+    Route::get('/laporan', [LaporanController::class, 'getLaporan']);
+    Route::post('/laporan/pemasukan', [LaporanController::class, 'CreatePemasukan']);
+    Route::post('/laporan/pengeluaran', [LaporanController::class, 'CreatePengeluaran']);
+    Route::patch('/laporan/pemasukan/{id}', [LaporanController::class, 'updatePemasukan']);
+    Route::patch('/laporan/pengeluaran/{id}', [LaporanController::class, 'updatePengeluaran']);
+    Route::delete('/laporan/{id}', [LaporanController::class, 'deleteLaporan']);
 
 
 

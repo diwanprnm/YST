@@ -8,7 +8,7 @@ class MeninggalController extends Controller
 {
     public function getMeninggal()
     {
-        $meninggal = meninggal::all();
+        $meninggal = Meninggal::all();
         return [
         "status" => 1,
         "data" => $meninggal

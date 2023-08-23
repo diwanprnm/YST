@@ -111,7 +111,7 @@ public function getProgramDonasiPaginate(Request $request)
             $file = $request->file('foto_p_donasi');
 
             $nama_file = 'img_' . Str::random(16) . '.' . $file->getClientOriginalExtension();
-            $tujuan_upload = 'Foto/Programdonasi';
+            $tujuan_upload = 'foto/Programdonasi';
             $file->move($tujuan_upload, $nama_file);
             $data['foto_p_donasi'] = $tujuan_upload . '/' . $nama_file;
         }

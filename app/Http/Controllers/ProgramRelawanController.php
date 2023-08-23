@@ -79,7 +79,7 @@ class ProgramRelawanController extends Controller
             $file = $request->file('foto_p_relawan');
 
             $nama_file = 'img_' . Str::random(16) . '.' . $file->getClientOriginalExtension();
-            $tujuan_upload = 'Foto/Programrelawan';
+            $tujuan_upload = 'foto/Programrelawan';
             $file->move($tujuan_upload, $nama_file);
             $data['foto_p_relawan'] = $tujuan_upload . '/' . $nama_file;
         }

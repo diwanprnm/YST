@@ -124,7 +124,7 @@ class BeritaController extends Controller
             $file = $request->file('gambar_berita');
 
             $nama_file = 'img_' . Str::random(16) . '.' . $file->getClientOriginalExtension();
-            $tujuan_upload = 'Foto/Berita';
+            $tujuan_upload = 'foto/Berita';
             $file->move($tujuan_upload, $nama_file);
             $data['gambar_berita'] = $tujuan_upload . '/' . $nama_file;
         }
