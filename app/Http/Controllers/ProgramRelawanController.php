@@ -75,6 +75,8 @@ class ProgramRelawanController extends Controller
                 
         ]);
         $data = $request->all();
+        $data['status_program_relawan'] = 'Pending';
+
         if ($request->file('foto_p_relawan')) {
             $file = $request->file('foto_p_relawan');
 
@@ -145,7 +147,25 @@ class ProgramRelawanController extends Controller
                 ], 404);
             }
         }
-
+        public function approveProgramRelawan(Request $request, $id)
+        {
+            $program_relawan = ProgramRelawan::find($id);
+    
+            if (!$program_relawan) {
+                return [
+                    "status" => 0,
+                    "msg" => "program relawan not found"
+                ];
+            }
+    
+            $program_relawan->status_program_relawan = 'Berjalan';
+            $program_relawan->save();
+    
+            return [
+                "status" => 1,
+                "msg" => "program relawan approved Berhasil"
+            ];
+        }
 
 
 }

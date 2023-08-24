@@ -90,9 +90,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/beasiswa', [BeasiswaController::class, 'CreateBeasiswa']);
     Route::patch('/beasiswa/{id}', [BeasiswaController::class, 'updateBeasiswa']);
     Route::delete('/beasiswa/{id}', [BeasiswaController::class, 'deleteBeasiswa']);
-    Route::patch('/beasiswa/approve/{id}', [BeasiswaController::class, 'approveBeasiswa']);
-    Route::patch('/beasiswa/reject/{id}', [BeasiswaController::class, 'rejectBeasiswa']);
-
+    
     Route::post('/programDonasi', [ProgramDonasiController::class, 'createProgramDonasi']);
     Route::patch('/programDonasi/{id}', [ProgramDonasiController::class, 'updateProgramDonasi']);
     Route::delete('/programDonasi/{id}', [ProgramDonasiController::class, 'deleteProgramDonasi']);
@@ -101,34 +99,56 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/programRelawan', [ProgramRelawanController::class, 'createProgramRelawan']);
     Route::patch('/programRelawan/{id}', [ProgramRelawanController::class, 'updateProgramRelawan']);
     Route::delete('/programRelawan/{id}', [ProgramRelawanController::class, 'deleteProgramRelawan']);
-
-
+    
+    
     Route::get('/donasi', [DonasiController::class, 'getDonasi']);
     Route::post('/donasi', [DonasiController::class, 'CreateDonasi']);
-    Route::patch('/donasi/{id}', [DonasiController::class, 'approveDonasi']);
-
+    
     
     Route::get('/relawan', [RelawanController::class, 'getRelawan']);
     Route::post('/relawan', [RelawanController::class, 'CreateRelawan']);
-    Route::patch('/relawan/approve/{id}', [RelawanController::class, 'approveRelawan']);
-    Route::patch('/relawan/reject/{id}', [RelawanController::class, 'rejectRelawan']);
-    
-    Route::post('/kelolaKonten', [BerandaController::class, 'createOrUpdateBeranda']);
+  
     
     
-    Route::get('/laporan', [LaporanController::class, 'getLaporan']);
-    Route::post('/laporan/pemasukan', [LaporanController::class, 'CreatePemasukan']);
-    Route::post('/laporan/pengeluaran', [LaporanController::class, 'CreatePengeluaran']);
-    Route::patch('/laporan/pemasukan/{id}', [LaporanController::class, 'updatePemasukan']);
-    Route::patch('/laporan/pengeluaran/{id}', [LaporanController::class, 'updatePengeluaran']);
-    Route::delete('/laporan/{id}', [LaporanController::class, 'deleteLaporan']);
+    // api untuk level user Pengurus YST & DPP
+    Route::group(['middleware' => ['level_user:2']], function () {
+        
+        Route::get('/laporan', [LaporanController::class, 'getLaporan']);
+        Route::post('/laporan/pemasukan', [LaporanController::class, 'CreatePemasukan']);
+        Route::post('/laporan/pengeluaran', [LaporanController::class, 'CreatePengeluaran']);
+        Route::patch('/laporan/pemasukan/{id}', [LaporanController::class, 'updatePemasukan']);
+        Route::patch('/laporan/pengeluaran/{id}', [LaporanController::class, 'updatePengeluaran']);
+        Route::delete('/laporan/{id}', [LaporanController::class, 'deleteLaporan']);
+        
+        
+        Route::patch('/programRelawan/approve/{id}', [ProgramRelawanController::class, 'approveProgramRelawan']);
+        
+        Route::patch('/beasiswa/reject/{id}', [BeasiswaController::class, 'rejectBeasiswa']);
+        Route::patch('/beasiswa/approve/{id}', [BeasiswaController::class, 'approveBeasiswa']);
+        
+        
+        Route::post('/kelolaKonten', [BerandaController::class, 'createOrUpdateBeranda']);
+        
+        Route::patch('/donasi/approve/{id}', [DonasiController::class, 'approveDonasi']);
+        
+        Route::patch('/programDonasi/approve/{id}', [ProgramDonasiController::class, 'approveProgramDonasi']);
+        
+        
+    }); 
+    // api untuk Pengurus DPW
+    Route::group(['middleware' => ['level_user:2|3']], function () {
 
+        Route::patch('/relawan/approve/{id}', [RelawanController::class, 'approveRelawan']);
+        Route::patch('/relawan/reject/{id}', [RelawanController::class, 'rejectRelawan']);
+        
 
-
-
+    }); 
+    
+    
+    
 });
 
-
+            
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

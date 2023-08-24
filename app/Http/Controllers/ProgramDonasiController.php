@@ -96,7 +96,6 @@ public function getProgramDonasiPaginate(Request $request)
             'target_dana' => 'required',
             'deskripsi_lengkap_donasi' => 'required',
             'tgl_selesai' => 'required',
-            'status_program_donasi' => 'required',
             'penanggung_jawab' => 'required',
             'jangka_waktu' => 'required',
             'kategori_donasi' => 'required',
@@ -107,6 +106,8 @@ public function getProgramDonasiPaginate(Request $request)
             
         ]);
         $data = $request->all();
+        $data['status_program_donasi'] = 'Pending';
+
         if ($request->file('foto_p_donasi')) {
             $file = $request->file('foto_p_donasi');
 
@@ -115,6 +116,7 @@ public function getProgramDonasiPaginate(Request $request)
             $file->move($tujuan_upload, $nama_file);
             $data['foto_p_donasi'] = $tujuan_upload . '/' . $nama_file;
         }
+
         ProgramDonasi::create($data);
         return [
             "status" => 1,
@@ -158,6 +160,27 @@ public function getProgramDonasiPaginate(Request $request)
             ], 200);
            
         }
+
+        public function approveProgramDonasi(Request $request, $id)
+        {
+            $program_donasi = ProgramDonasi::find($id);
+    
+            if (!$program_donasi) {
+                return [
+                    "status" => 0,
+                    "msg" => "program donasi not found"
+                ];
+            }
+    
+            $program_donasi->status_program_donasi = 'Berjalan';
+            $program_donasi->save();
+    
+            return [
+                "status" => 1,
+                "msg" => "program donasi approved Berhasil"
+            ];
+        }
+        
 
 
         public function deleteProgramDonasi($id_program_donasi)
