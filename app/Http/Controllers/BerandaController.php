@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\File;
 
                     if ($existingBeranda) {
                         // Jika data konten beranda sudah ada, lakukan pembaruan
-                        return $this->updateBeranda($request, $existingBeranda);
+                    
                     } else {
                         // Jika data konten beranda belum ada, lakukan pembuatan
                         return $this->createBeranda($request);

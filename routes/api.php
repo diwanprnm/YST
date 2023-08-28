@@ -102,13 +102,16 @@ Route::middleware('auth:sanctum')->group( function () {
     
     
     Route::get('/donasi', [DonasiController::class, 'getDonasi']);
+    Route::get('/LaporanProgramDonasi', [ProgramDonasiController::class, 'getLaporanProgramDonasi']);
     Route::post('/donasi', [DonasiController::class, 'CreateDonasi']);
     
     
     Route::get('/relawan', [RelawanController::class, 'getRelawan']);
+    Route::get('/LaporanProgramRelawan', [ProgramRelawanController::class, 'getLaporanProgramRelawan']);
     Route::post('/relawan', [RelawanController::class, 'CreateRelawan']);
   
     
+
     
     // api untuk level user Pengurus YST & DPP
     Route::group(['middleware' => ['level_user:2']], function () {

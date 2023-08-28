@@ -37,6 +37,19 @@ class ProgramDonasiController extends Controller
     }
 }
 
+    public function getLaporanProgramDonasi()
+    {
+        $program_donasi = ProgramDonasi::where('status_program_donasi' ,'Selesai')->get();
+      
+       
+        return [
+            "status" => 1,
+            "data" => $program_donasi
+        ];
+        
+    }
+
+
 public function getProgramDonasiPaginate(Request $request)
 {
     $status = $request->input('status_program_donasi');

@@ -167,5 +167,17 @@ class ProgramRelawanController extends Controller
             ];
         }
 
+        public function getLaporanProgramRelawan()
+        {
+            $program_relawan = ProgramRelawan::where('status_program_relawan' ,'Selesai')->get();
+          
+           
+            return [
+                "status" => 1,
+                "data" => $program_relawan
+            ];
+            
+        }
+
 
 }
