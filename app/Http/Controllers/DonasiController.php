@@ -82,9 +82,23 @@ class DonasiController extends Controller
 
         return [
             "status" => 1,
-            "msg" => "Donasi reject Berhasil"
+            "msg" => "Donasi verifikasi Berhasil"
         ];
     }
+
+    public function getLaporanDonasi()
+    {
+        $donasi = Donasi::where('status_donasi' ,'1')->get();
+      
+       
+        return [
+            "status" => 1,
+            "data" => $donasi
+        ];
+        
+    }
+
+
 }
 
 

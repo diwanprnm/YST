@@ -39,7 +39,7 @@ class ProgramDonasiController extends Controller
 
     public function getLaporanProgramDonasi()
     {
-        $program_donasi = ProgramDonasi::where('status_program_donasi' ,'Selesai')->get();
+        $program_donasi = ProgramDonasi::where('status_program_donasi' ,'3')->get();
       
        
         return [
@@ -119,7 +119,7 @@ public function getProgramDonasiPaginate(Request $request)
             
         ]);
         $data = $request->all();
-        $data['status_program_donasi'] = 'Pending';
+        $data['status_program_donasi'] = '0';
 
         if ($request->file('foto_p_donasi')) {
             $file = $request->file('foto_p_donasi');
@@ -164,6 +164,7 @@ public function getProgramDonasiPaginate(Request $request)
             $data->jangka_waktu = $request->jangka_waktu;
             $data->penerima_donasi = $request->penerima_donasi;
             $data->kategori_donasi = $request->kategori_donasi;
+            $data->status_program_donasi = $request->status_program_donasi;
            
             $data->save();
            
@@ -185,7 +186,7 @@ public function getProgramDonasiPaginate(Request $request)
                 ];
             }
     
-            $program_donasi->status_program_donasi = 'Berjalan';
+            $program_donasi->status_program_donasi = '1';
             $program_donasi->save();
     
             return [

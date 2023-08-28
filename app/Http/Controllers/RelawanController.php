@@ -103,4 +103,16 @@ class RelawanController extends Controller
     }
 
 
+    public function getLaporanRelawan()
+    {
+        $donasi = Relawan::where('status_relawan' ,'1')->get();
+      
+       
+        return [
+            "status" => 1,
+            "data" => $donasi
+        ];
+        
+    }
+
 }

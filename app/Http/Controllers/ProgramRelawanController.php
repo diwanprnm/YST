@@ -75,7 +75,7 @@ class ProgramRelawanController extends Controller
                 
         ]);
         $data = $request->all();
-        $data['status_program_relawan'] = 'Pending';
+        $data['status_program_relawan'] = '0';
 
         if ($request->file('foto_p_relawan')) {
             $file = $request->file('foto_p_relawan');
@@ -120,6 +120,7 @@ class ProgramRelawanController extends Controller
             $data->penanggung_jawab = $request->penanggung_jawab;
             $data->tenggat_waktu = $request->tenggat_waktu;
             $data->kategori_relawan = $request->kategori_relawan;
+            $data->status_program_donasi = $request->status_program_donasi;
            
             $data->save();
            
@@ -158,7 +159,7 @@ class ProgramRelawanController extends Controller
                 ];
             }
     
-            $program_relawan->status_program_relawan = 'Berjalan';
+            $program_relawan->status_program_relawan = '1';
             $program_relawan->save();
     
             return [
@@ -167,9 +168,9 @@ class ProgramRelawanController extends Controller
             ];
         }
 
-        public function getLaporanProgramRelawan()
+        public function getLaporanRelawan()
         {
-            $program_relawan = ProgramRelawan::where('status_program_relawan' ,'Selesai')->get();
+            $program_relawan = ProgramRelawan::where('status_program_relawan' ,'3')->get();
           
            
             return [
