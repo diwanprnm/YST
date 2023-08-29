@@ -5,6 +5,12 @@ use App\Models\Donasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
+use PDF;
+use Carbon\Carbon;
+
+use Illuminate\Support\Facades\DB;
+
+
 
 
 
@@ -98,6 +104,29 @@ class DonasiController extends Controller
         
     }
 
+    public function LaporanDonasiPDF()
+    {
+        $donasi = DB::table('t_donasi')
+        ->join('t_program_donasi', 't_donasi.id_program_donasi', '=', 't_program_donasi.id_program_donasi')
+        ->where('t_donasi.status_donasi', '1')
+        ->select('t_donasi.id_donasi','t_donasi.nama_donatur', 't_donasi.nominal_donasi', 't_donasi.tgl_donasi', 't_program_donasi.nama_program_donasi as nama_program')
+        ->get();
+    
+    
+        // Menghasilkan tampilan Blade dan mengirimkan data
+        $pdf = PDF::loadView('pdf.program_donasi_list', ['donasi' => $donasi]);
+
+        $pdf->setPaper('a4', 'portrait'); // 'portrait' untuk tampilan vertikal, 'landscape' untuk tampilan horizontal
+
+    
+        // Nama file PDF yang akan dihasilkan
+        $filename = 'program_donasi_list.pdf';
+    
+        // Mengembalikan respons PDF
+        return $pdf->download($filename);
+    }
+    
+    
 
 }
 

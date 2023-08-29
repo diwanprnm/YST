@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 use App\Models\ProgramDonasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
+use PDF;
+use Carbon\Carbon;
+
+
+
 
 
 class ProgramDonasiController extends Controller
@@ -213,6 +219,29 @@ public function getProgramDonasiPaginate(Request $request)
                 ], 404);
             }
         }
+
+            public function LaporanProgramDonasiPDF()
+        {
+            $donasi = ProgramDonasi::select('t_program_donasi.id_program_donasi', 't_program_donasi.nama_program_donasi', 't_program_donasi.penanggung_jawab', 't_program_donasi.tgl_penyaluran','t_program_donasi.penerima_donasi', DB::raw('SUM(t_donasi.nominal_donasi) as total_nominal_donasi'))
+            ->leftJoin('t_donasi', 't_program_donasi.id_program_donasi', '=', 't_donasi.id_program_donasi')
+            ->where('t_program_donasi.status_program_donasi', '3')
+            ->groupBy('t_program_donasi.id_program_donasi', 't_program_donasi.nama_program_donasi', 't_program_donasi.penanggung_jawab', 't_program_donasi.tgl_penyaluran','t_program_donasi.penerima_donasi')
+            ->get();
+
+        // dd($donasi);
+            // Menghasilkan tampilan Blade dan mengirimkan data
+            $pdf = PDF::loadView('pdf.programdonasi', ['donasi' => $donasi]);
+
+            $pdf->setPaper('a4', 'portrait'); // 'portrait' untuk tampilan vertikal, 'landscape' untuk tampilan horizontal
+
+        
+            // Nama file PDF yang akan dihasilkan
+            $filename = 'programDonasi.pdf';
+        
+            // Mengembalikan respons PDF
+            return $pdf->download($filename);
+        }
+    
 
 
 

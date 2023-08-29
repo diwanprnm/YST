@@ -5,6 +5,8 @@ use App\Models\Relawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
+use PDF;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -114,5 +116,29 @@ class RelawanController extends Controller
         ];
         
     }
+
+    public function LaporanRelawanPDF()
+    {
+        $relawan = DB::table('t_relawan')
+        ->join('t_program_relawan', 't_relawan.id_program_relawan', '=', 't_program_relawan.id_program_relawan')
+        ->where('t_relawan.status_relawan', '1')
+        ->select('t_relawan.id_relawan','t_relawan.nama_lengkap', 't_relawan.tgl_pelaksanaan', 't_relawan.domisili', 't_relawan.no_hp','t_program_relawan.nama_program_relawan as nama_program')
+        ->get();
+    
+    
+        // Menghasilkan tampilan Blade dan mengirimkan data
+        $pdf = PDF::loadView('pdf.relawan', ['relawan' => $relawan]);
+
+        $pdf->setPaper('a4', 'portrait'); // 'portrait' untuk tampilan vertikal, 'landscape' untuk tampilan horizontal
+
+    
+        // Nama file PDF yang akan dihasilkan
+        $filename = 'LaporanRelawan.pdf';
+    
+        // Mengembalikan respons PDF
+        return $pdf->download($filename);
+    }
+    
+
 
 }

@@ -44,6 +44,10 @@ Route::get('/artikel', [BeritaController::class, 'getArtikel']);
 Route::get('/programRelawan', [ProgramRelawanController::class, 'getProgramRelawan']);
 Route::get('/programRelawan/{id}', [ProgramRelawanController::class, 'getProgramRelawanById']);
 
+Route::get('/laporanDonasiPDF', [DonasiController::class, 'LaporanDonasiPDF']);
+Route::get('/laporanProgramDonasiPDF', [ProgramDonasiController::class, 'LaporanProgramDonasiPDF']);
+Route::get('/laporanProgramRelawanPDF', [ProgramRelawanController::class, 'LaporanProgramRelawanPDF']);
+Route::get('/laporanRelawanPDF', [RelawanController::class, 'LaporanRelawanPDF']);
 
 Route::middleware('auth:sanctum')->group( function () {
         

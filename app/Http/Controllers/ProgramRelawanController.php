@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 use App\Models\ProgramRelawan;
+use App\Models\Relawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
+use PDF;
 
 
 class ProgramRelawanController extends Controller
@@ -179,6 +182,30 @@ class ProgramRelawanController extends Controller
             ];
             
         }
+
+        public function LaporanProgramRelawanPDF()
+        {
+            $program_relawan = ProgramRelawan::where('status_program_relawan', '3')->get();
+        
+            foreach ($program_relawan as $program) {
+                $total_relawan = Relawan::where('id_program_relawan', $program->id_program_relawan)
+                                        ->where('status_relawan', 1)
+                                        ->count();
+                $program->total_relawan = $total_relawan;
+            }
+        
+            // Menghasilkan tampilan Blade dan mengirimkan data
+            $pdf = PDF::loadView('pdf.programrelawan', ['program_relawan' => $program_relawan]);
+        
+            $pdf->setPaper('a4', 'portrait'); // 'portrait' untuk tampilan vertikal, 'landscape' untuk tampilan horizontal
+        
+            // Nama file PDF yang akan dihasilkan
+            $filename = 'programRelawan.pdf';
+        
+            // Mengembalikan respons PDF
+            return $pdf->download($filename);
+        }
+        
 
 
 }
