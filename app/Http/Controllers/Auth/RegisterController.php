@@ -68,7 +68,8 @@ class RegisterController extends Controller
             return response()->json([
                 'message' => 'Login berhasil',
                 'token' => $token,
-                'name' => $user->name
+                'name' => $user->name,
+                'level_user' => $user->level_user
             ]);
         } else {
             return response()->json([

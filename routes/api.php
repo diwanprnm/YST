@@ -49,12 +49,18 @@ Route::get('/laporanProgramDonasiPDF', [ProgramDonasiController::class, 'Laporan
 Route::get('/laporanProgramRelawanPDF', [ProgramRelawanController::class, 'LaporanProgramRelawanPDF']);
 Route::get('/laporanRelawanPDF', [RelawanController::class, 'LaporanRelawanPDF']);
 
+Route::get('/csrf-cookie', function (Request $request) {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
+
+
 Route::middleware('auth:sanctum')->group( function () {
-        
+            
 
     Route::group(['middleware' => ['level_user:1|2|3|4']], function () {
             Route::get('/donasi', [DonasiController::class, 'getDonasi']);
             Route::post('/donasi', [DonasiController::class, 'CreateDonasi']);
+            
             
             Route::get('/relawan', [RelawanController::class, 'getRelawan']);
             Route::post('/relawan', [RelawanController::class, 'CreateRelawan']);
@@ -62,7 +68,6 @@ Route::middleware('auth:sanctum')->group( function () {
 
 
     Route::group(['middleware' => ['level_user:1|2|3']], function () { 
-        Route::post('/logout', [RegisterController::class, 'logout']);
         Route::resource('/post', PostController::class);
         
         // api untuk crud berita
@@ -112,23 +117,23 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::patch('/programRelawan/{id}', [ProgramRelawanController::class, 'updateProgramRelawan']);
         Route::delete('/programRelawan/{id}', [ProgramRelawanController::class, 'deleteProgramRelawan']);
         
-    
-        }); 
         
-        // api untuk level user Pengurus YST & DPP
+    }); 
+    
+    // api untuk level user Pengurus YST & DPP
     Route::group(['middleware' => ['level_user:2']], function () {
             
-            Route::get('/laporan', [LaporanController::class, 'getLaporan']);
-            Route::post('/laporan/pemasukan', [LaporanController::class, 'CreatePemasukan']);
-            Route::post('/laporan/pengeluaran', [LaporanController::class, 'CreatePengeluaran']);
-            Route::patch('/laporan/pemasukan/{id}', [LaporanController::class, 'updatePemasukan']);
-            Route::patch('/laporan/pengeluaran/{id}', [LaporanController::class, 'updatePengeluaran']);
-            Route::delete('/laporan/{id}', [LaporanController::class, 'deleteLaporan']);
-            
-            
-            Route::patch('/programRelawan/approve/{id}', [ProgramRelawanController::class, 'approveProgramRelawan']);
-            
-            Route::patch('/beasiswa/reject/{id}', [BeasiswaController::class, 'rejectBeasiswa']);
+        Route::get('/laporan', [LaporanController::class, 'getLaporan']);
+        Route::post('/laporan/pemasukan', [LaporanController::class, 'CreatePemasukan']);
+        Route::post('/laporan/pengeluaran', [LaporanController::class, 'CreatePengeluaran']);
+        Route::patch('/laporan/pemasukan/{id}', [LaporanController::class, 'updatePemasukan']);
+        Route::patch('/laporan/pengeluaran/{id}', [LaporanController::class, 'updatePengeluaran']);
+        Route::delete('/laporan/{id}', [LaporanController::class, 'deleteLaporan']);
+        
+        
+        Route::patch('/programRelawan/approve/{id}', [ProgramRelawanController::class, 'approveProgramRelawan']);
+        
+        Route::patch('/beasiswa/reject/{id}', [BeasiswaController::class, 'rejectBeasiswa']);
             Route::patch('/beasiswa/approve/{id}', [BeasiswaController::class, 'approveBeasiswa']);
             
             
@@ -144,22 +149,23 @@ Route::middleware('auth:sanctum')->group( function () {
             
         }); 
         // api untuk Pengurus DPW
-    Route::group(['middleware' => ['level_user:2|3']], function () {
+        Route::group(['middleware' => ['level_user:2|3']], function () {
             
             Route::patch('/programDonasi/approve/{id}', [ProgramDonasiController::class, 'approveProgramDonasi']);
-            Route::patch('/relawan/reject/{id}', [RelawanController::class, 'rejectRelawan']);
             Route::patch('/relawan/approve/{id}', [RelawanController::class, 'approveRelawan']);
+            Route::patch('/relawan/reject/{id}', [RelawanController::class, 'rejectRelawan']);
             
             
-    }); 
+        }); 
         
-    
-    
-});
+        
+        Route::post('/logout', [RegisterController::class, 'logout']);
+        
+    });
 
             
-
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
+    
+    
+    // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+        //     return $request->user();
 // });

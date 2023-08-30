@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use PDF;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DonasiCreated;
+use App\Mail\DonasiApproved;
+
 
 use Illuminate\Support\Facades\DB;
 
@@ -41,36 +45,36 @@ class DonasiController extends Controller
     }
 }
     
-    public function CreateDonasi(Request $request)
-    {
-        $request->validate([
-            'nama_donatur' => 'required',
-            'nominal_donasi' => 'required',
+public function CreateDonasi(Request $request)
+{
+    $request->validate([
+        'nama_donatur' => 'required',
+        'nominal_donasi' => 'required',
+    ]);
 
-            
-        ]);
- 
-        $user = Auth::user();
+    $user = Auth::user();
 
-        $donasi = $request->all();
-        $donasi['id_user'] = $user->id; // Menyimpan id_user yang sedang login
-        $donasi['email'] = $user->email; // Menyimpan id_user yang sedang login
-        $donasi['status_donasi'] = 2;
+    $donasi = $request->all();
+    $donasi['id_user'] = $user->id;
+    $donasi['email'] = $user->email;
+    $donasi['status_donasi'] = 2;
 
-        $nominalDonasi = $request->input('nominal_donasi');
-        $donasi['belum_dibayar'] = $nominalDonasi + rand(100, 999); // Menambahkan 3 angka acak
+    $nominalDonasi = $request->input('nominal_donasi');
+    $donasi['belum_dibayar'] = $nominalDonasi + rand(100, 999);
 
-        $donasi['tgl_donasi'] = now(); // Menggunakan fungsi bawaan PHP untuk mendapatkan waktu saat ini
+    $donasi['tgl_donasi'] = now();
 
+    $newDonasi = Donasi::create($donasi);
 
+    // Kirim email
+    Mail::to($user->email)->send(new DonasiCreated($newDonasi));
 
-        Donasi::create($donasi);
-        return [
-            "status" => 1,
-            "data" => $donasi,
-            "msg" => "donasi created successfully"
-        ];
-    }
+    return [
+        "status" => 1,
+        "data" => $newDonasi,
+        "msg" => "Donasi created successfully"
+    ];
+}
 
     public function approveDonasi(Request $request, $id)
     {
@@ -85,6 +89,8 @@ class DonasiController extends Controller
 
         $donasi->status_donasi = 1;
         $donasi->save();
+        Mail::to($donasi->email)->send(new DonasiApproved($donasi));
+
 
         return [
             "status" => 1,

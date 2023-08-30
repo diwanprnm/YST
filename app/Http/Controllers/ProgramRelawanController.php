@@ -68,14 +68,14 @@ class ProgramRelawanController extends Controller
             'deskripsi_singkat_relawan' => 'required',
             'target_relawan' => 'required',
             'deskripsi_lengkap_relawan' => 'required',
+            'target_prelawan' => 'required',
             'tgl_pelaksanaan' => 'required',
-            'status_program_relawan' => 'required',
             'penanggung_jawab' => 'required',
             'tenggat_waktu' => 'required',
             'lokasi_awal' => 'required',
-            'kategori_relawan' => 'required',
             'lokasi_program' => 'required',
-                
+            'kategori_relawan' => 'required',
+            'foto_p_relawan' => 'required'
         ]);
         $data = $request->all();
         $data['status_program_relawan'] = '0';

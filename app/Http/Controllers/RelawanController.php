@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 use App\Models\Relawan;
+use App\Models\ProgramRelawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use PDF;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RelawanApproved;
 
 
 
@@ -57,8 +60,10 @@ class RelawanController extends Controller
         
 
 
-        Relawan::create($relawan);
-        return [
+        $new = Donasi::create($donasi);
+
+        // Kirim email
+        Mail::to($user->email)->send(new DonasiCreated($new));        return [
             "status" => 1,
             "data" => $relawan,
             "msg" => "relawan created successfully"
@@ -78,6 +83,12 @@ class RelawanController extends Controller
 
         $relawan->status_relawan = 1;
         $relawan->save();
+
+        $programRelawanData = ProgramRelawan::select('nama_program_relawan', 'tgl_pelaksanaan', 'lokasi_program', 'lokasi_awal')
+        ->where('id_program_relawan', $relawan->id_program_relawan)
+        ->first();
+
+        Mail::to($relawan->email)->send(new RelawanApproved($relawan, $programRelawanData));
 
         return [
             "status" => 1,
