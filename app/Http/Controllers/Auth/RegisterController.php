@@ -35,6 +35,7 @@ class RegisterController extends Controller
         $input['password'] = bcrypt($input['password']);
         $input['status_user'] = 'y';
         $input['is_die'] = 'n';
+        $input['level_user'] = '5';
         
         $user = User::create($input);
         $success['token'] =  $user->createToken('MyApp')->plainTextToken;
