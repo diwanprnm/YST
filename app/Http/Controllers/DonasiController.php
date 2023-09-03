@@ -100,8 +100,12 @@ public function CreateDonasi(Request $request)
 
     public function getLaporanDonasi()
     {
-        $donasi = Donasi::where('status_donasi' ,'1')->get();
-      
+        $donasi = DB::table('t_donasi')
+        ->join('t_program_donasi', 't_donasi.id_program_donasi', '=', 't_program_donasi.id_program_donasi')
+        ->where('t_donasi.status_donasi', '1')
+        ->select('t_donasi.id_donasi','t_donasi.nama_donatur', 't_donasi.nominal_donasi', 't_donasi.tgl_donasi', 't_program_donasi.nama_program_donasi as nama_program')
+        ->get();
+          
        
         return [
             "status" => 1,

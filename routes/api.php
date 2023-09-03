@@ -38,27 +38,27 @@ Route::get('/programDonasi/paginate', [ProgramDonasiController::class, 'getProgr
 Route::get('/programDonasi/{id}', [ProgramDonasiController::class, 'getProgramDonasiById']);
 
 Route::get('/artikel', [BeritaController::class, 'getArtikel']);
+Route::get('/laporanProgramDonasiPDF', [ProgramDonasiController::class, 'LaporanProgramDonasiPDF'])->name('pdf.programdonasi');
 
 
 // api untuk Program Relawan
 Route::get('/programRelawan', [ProgramRelawanController::class, 'getProgramRelawan']);
 Route::get('/programRelawan/{id}', [ProgramRelawanController::class, 'getProgramRelawanById']);
 
-Route::get('/laporanDonasiPDF', [DonasiController::class, 'LaporanDonasiPDF']);
-Route::get('/laporanProgramDonasiPDF', [ProgramDonasiController::class, 'LaporanProgramDonasiPDF']);
-Route::get('/laporanProgramRelawanPDF', [ProgramRelawanController::class, 'LaporanProgramRelawanPDF']);
-Route::get('/laporanRelawanPDF', [RelawanController::class, 'LaporanRelawanPDF']);
 
 Route::get('/csrf-cookie', function (Request $request) {
     return response()->json(['csrf_token' => csrf_token()]);
 });
 
+Route::get('/laporanDonasiPDF', [DonasiController::class, 'LaporanDonasiPDF']);
 
 Route::middleware('auth:sanctum')->group( function () {
-            
-
-    Route::group(['middleware' => ['level_user:1|2|3|4']], function () {
-            Route::get('/donasi', [DonasiController::class, 'getDonasi']);
+    
+    Route::get('/laporanProgramRelawanPDF', [ProgramRelawanController::class, 'LaporanProgramRelawanPDF']);
+    Route::get('/laporanRelawanPDF', [RelawanController::class, 'LaporanRelawanPDF']);
+    
+    Route::group(['middleware' => ['level_user:1|2|3|4|5']], function () {
+        Route::get('/donasi', [DonasiController::class, 'getDonasi']);
             Route::post('/donasi', [DonasiController::class, 'CreateDonasi']);
             
             
@@ -67,7 +67,7 @@ Route::middleware('auth:sanctum')->group( function () {
     }); 
 
 
-    Route::group(['middleware' => ['level_user:1|2|3']], function () { 
+    Route::group(['middleware' => ['level_user:1|2|3|4']], function () { 
         Route::resource('/post', PostController::class);
         
         // api untuk crud berita
@@ -76,7 +76,7 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::delete('/berita/{id}', [BeritaController::class, 'deleteBerita']);
         
         // api untuk userAktif
-        Route::get('/userAktif', [UserController::class, 'getUserAktif']);
+        Route::get('/userAktif', [UserController::class, 'getUserAktif']);      
         Route::put('/userAktif/{id}', [UserController::class, 'updateUser']);
         Route::delete('/userAktif/{id}', [UserController::class, 'deleteUser']);
         
@@ -121,7 +121,7 @@ Route::middleware('auth:sanctum')->group( function () {
     }); 
     
     // api untuk level user Pengurus YST & DPP
-    Route::group(['middleware' => ['level_user:2']], function () {
+    Route::group(['middleware' => ['level_user:1|2|3']], function () {
             
         Route::get('/laporan', [LaporanController::class, 'getLaporan']);
         Route::post('/laporan/pemasukan', [LaporanController::class, 'CreatePemasukan']);
@@ -142,14 +142,14 @@ Route::middleware('auth:sanctum')->group( function () {
             Route::patch('/donasi/approve/{id}', [DonasiController::class, 'approveDonasi']);
             
             
-            Route::get('/LaporanProgramRelawan', [ProgramRelawanController::class, 'getLaporanProgramRelawan']);
+            Route::get('/LaporanProgramRelawan', [ProgramRelawanController::class, 'laporanProgramRelawan']);
             Route::get('/LaporanRelawan', [RelawanController::class, 'getLaporanRelawan']);
-            Route::get('/LaporanProgramDonasi', [ProgramDonasiController::class, 'getLaporanProgramDonasi']);
+            Route::get('/LaporanProgramDonasi', [ProgramDonasiController::class, 'getlaporanProgramDonasi']);
             Route::get('/LaporanDonasi', [DonasiController::class, 'getLaporanDonasi']);
             
         }); 
         // api untuk Pengurus DPW
-        Route::group(['middleware' => ['level_user:2|3']], function () {
+        Route::group(['middleware' => ['level_user:1|2|3|4']], function () {
             
             Route::patch('/programDonasi/approve/{id}', [ProgramDonasiController::class, 'approveProgramDonasi']);
             Route::patch('/relawan/approve/{id}', [RelawanController::class, 'approveRelawan']);

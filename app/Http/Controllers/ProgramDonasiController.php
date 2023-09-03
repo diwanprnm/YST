@@ -45,12 +45,15 @@ class ProgramDonasiController extends Controller
 
     public function getLaporanProgramDonasi()
     {
-        $program_donasi = ProgramDonasi::where('status_program_donasi' ,'3')->get();
-      
+        $donasi = ProgramDonasi::select('t_program_donasi.id_program_donasi', 't_program_donasi.nama_program_donasi', 't_program_donasi.penanggung_jawab', 't_program_donasi.tgl_penyaluran','t_program_donasi.penerima_donasi', DB::raw('SUM(t_donasi.nominal_donasi) as total_nominal_donasi'))
+        ->leftJoin('t_donasi', 't_program_donasi.id_program_donasi', '=', 't_donasi.id_program_donasi')
+        ->where('t_program_donasi.status_program_donasi', '3')
+        ->groupBy('t_program_donasi.id_program_donasi', 't_program_donasi.nama_program_donasi', 't_program_donasi.penanggung_jawab', 't_program_donasi.tgl_penyaluran','t_program_donasi.penerima_donasi')
+        ->get();      
        
         return [
             "status" => 1,
-            "data" => $program_donasi
+            "data" => $donasi
         ];
         
     }
@@ -224,29 +227,32 @@ public function getProgramDonasiPaginate(Request $request)
             }
         }
 
-            public function LaporanProgramDonasiPDF()
-        {
-            $donasi = ProgramDonasi::select('t_program_donasi.id_program_donasi', 't_program_donasi.nama_program_donasi', 't_program_donasi.penanggung_jawab', 't_program_donasi.tgl_penyaluran','t_program_donasi.penerima_donasi', DB::raw('SUM(t_donasi.nominal_donasi) as total_nominal_donasi'))
-            ->leftJoin('t_donasi', 't_program_donasi.id_program_donasi', '=', 't_donasi.id_program_donasi')
-            ->where('t_program_donasi.status_program_donasi', '3')
-            ->groupBy('t_program_donasi.id_program_donasi', 't_program_donasi.nama_program_donasi', 't_program_donasi.penanggung_jawab', 't_program_donasi.tgl_penyaluran','t_program_donasi.penerima_donasi')
-            ->get();
 
-        // dd($donasi);
-            // Menghasilkan tampilan Blade dan mengirimkan data
-            $pdf = PDF::loadView('pdf.programdonasi', ['donasi' => $donasi]);
+        public function LaporanProgramDonasiPDF()
+{
+    $donasi = ProgramDonasi::select('t_program_donasi.id_program_donasi', 't_program_donasi.nama_program_donasi', 't_program_donasi.penanggung_jawab', 't_program_donasi.tgl_penyaluran','t_program_donasi.penerima_donasi', DB::raw('SUM(t_donasi.nominal_donasi) as total_nominal_donasi'))
+        ->leftJoin('t_donasi', 't_program_donasi.id_program_donasi', '=', 't_donasi.id_program_donasi')
+        ->where('t_program_donasi.status_program_donasi', '3')
+        ->groupBy('t_program_donasi.id_program_donasi', 't_program_donasi.nama_program_donasi', 't_program_donasi.penanggung_jawab', 't_program_donasi.tgl_penyaluran','t_program_donasi.penerima_donasi')
+        ->get();
 
-            $pdf->setPaper('a4', 'portrait'); // 'portrait' untuk tampilan vertikal, 'landscape' untuk tampilan horizontal
+    $pdf = PDF::loadView('pdf.programdonasi', ['donasi' => $donasi]);
 
-        
-            // Nama file PDF yang akan dihasilkan
-            $filename = 'programDonasi.pdf';
-        
-            // Mengembalikan respons PDF
-            return $pdf->download($filename);
-        }
-    
+    $pdf->setPaper('a4', 'portrait');
 
+    $filename = 'programDonasi.pdf';
+
+    $content = $pdf->output();
+
+    return response($content, 200)
+    ->header('Content-Type', 'application/pdf')
+    ->header('Content-Disposition', 'inline; filename="' . $filename . '"');
 
 
 }
+}
+
+
+
+
+

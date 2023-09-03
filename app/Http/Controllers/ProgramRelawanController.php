@@ -171,17 +171,36 @@ class ProgramRelawanController extends Controller
             ];
         }
 
-        public function getLaporanRelawan()
+        public function laporanProgramRelawan()
         {
-            $program_relawan = ProgramRelawan::where('status_program_relawan' ,'3')->get();
-          
-           
+            $program_relawan = ProgramRelawan::where('status_program_relawan', '3')->get();
+        
+            foreach ($program_relawan as $program) {
+                $total_relawan = Relawan::where('id_program_relawan', $program->id_program_relawan)
+                                        ->where('status_relawan', 1)
+                                        ->count();
+                $program->total_relawan = $total_relawan;
+            }
+        
+            // Mengonversi hasil query ke format JSON
+            $jsonResponse = [];
+            foreach ($program_relawan as $program) {
+                $jsonResponse[] = [
+                    'id_program_relawan' => $program->id_program_relawan,
+                    'nama_program_relawan' => $program->nama_program_relawan,
+                    'total_relawan' => $program->total_relawan,
+                    'lokasi_program' => $program->lokasi_program,
+                    'tgl_pelaksanaan' => $program->tgl_pelaksanaan,
+                    'penanggung_jawab' => $program->penanggung_jawab,
+                ];
+            }
+        
             return [
                 "status" => 1,
-                "data" => $program_relawan
+                "data" => $jsonResponse
             ];
-            
         }
+        
 
         public function LaporanProgramRelawanPDF()
         {

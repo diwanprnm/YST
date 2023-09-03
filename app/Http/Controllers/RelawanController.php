@@ -118,12 +118,15 @@ class RelawanController extends Controller
 
     public function getLaporanRelawan()
     {
-        $donasi = Relawan::where('status_relawan' ,'1')->get();
-      
+        $relawan = DB::table('t_relawan')
+        ->join('t_program_relawan', 't_relawan.id_program_relawan', '=', 't_program_relawan.id_program_relawan')
+        ->where('t_relawan.status_relawan', '1')
+        ->select('t_relawan.id_relawan','t_relawan.nama_lengkap', 't_relawan.tgl_pelaksanaan', 't_relawan.domisili', 't_relawan.no_hp','t_program_relawan.nama_program_relawan as nama_program')
+        ->get();      
        
         return [
             "status" => 1,
-            "data" => $donasi
+            "data" => $relawan
         ];
         
     }
