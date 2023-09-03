@@ -66,9 +66,8 @@ class ProgramRelawanController extends Controller
         $request->validate([
             'nama_program_relawan' => 'required',
             'deskripsi_singkat_relawan' => 'required',
-            'target_relawan' => 'required',
             'deskripsi_lengkap_relawan' => 'required',
-            'target_prelawan' => 'required',
+            'target_relawan' => 'required',
             'tgl_pelaksanaan' => 'required',
             'penanggung_jawab' => 'required',
             'tenggat_waktu' => 'required',

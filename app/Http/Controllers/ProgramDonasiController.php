@@ -119,13 +119,13 @@ public function getProgramDonasiPaginate(Request $request)
             'target_dana' => 'required',
             'deskripsi_lengkap_donasi' => 'required',
             'tgl_selesai' => 'required',
-            'tgl_p_donasi' => 'required',
+            'tgl_pdonasi' => 'required',
             'penanggung_jawab' => 'required',
             'jangka_waktu' => 'required',
             'kategori_donasi' => 'required',
             'penerima_donasi' => 'required',
-            'foto_p_d' => 'required',
-            'tanggal_penyaluran' => 'required',
+            'foto_p_donasi' => 'required',
+            'tgl_penyaluran' => 'required',
             
             
 
