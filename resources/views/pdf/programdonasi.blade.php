@@ -108,6 +108,6 @@
         </div>
     </div>
     <div class="footer">
-        <strong>&copy; YST 2021.</strong> Yayasan Sekar Telkom
+        <strong>&copy;</strong> Yayasan Sekar Telkom
     </div>
 </html>

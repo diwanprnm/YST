@@ -23,29 +23,30 @@ class BeritaController extends Controller
     }
 
      public function getArtikel(Request $request)
-    {
-        $status = $request->input('status_berita');
+{
+    $status = $request->input('status_berita');
 
-        $query = Berita::query();
+    $query = Berita::query();
 
-        if ($status !== null) {
-            $query->where('status_berita', $status);
-        }
-
-        $data = $query->get();
-
-        if ($status !== null) {
-            return [
-                "status" => 1,
-                "filtered_data" => $data
-            ];
-        } else {
-            return [
-                "status" => 1,
-                "data" => $data
-            ];
-        }
+    if ($status !== null) {
+        $query->where('status_berita', $status);
     }
+
+    $data = $query->get();
+
+    $totalStatus1 = $data->where('status_berita', 1)->count();
+    $totalStatus2 = $data->where('status_berita', 2)->count();
+
+    $response = [
+        "status" => 1,
+        "filtered_data" => $data,
+        "total_status_1" => $totalStatus1,
+        "total_status_2" => $totalStatus2
+    ];
+
+    return $response;
+}
+
 
 
 

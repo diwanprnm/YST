@@ -27,15 +27,24 @@ class ProgramRelawanController extends Controller
         return $item;
     });
 
+    $totalStatus0 = $data->where('status_program_relawan', 0)->count();
+
+    // Menghitung jumlah status_program_relawan 1
+    $totalStatus1 = $data->where('status_program_relawan', 1)->count();
+
     if ($status !== null) {
         return [
             "status" => 1,
-            "filtered_data" => $data
+            "filtered_data" => $data,
+            "total_status_0" => $totalStatus0,
+            "total_status_1" => $totalStatus1,
         ];
     } else {
         return [
             "status" => 1,
-            "data" => $data
+            "data" => $data,
+            "total_status_0" => $totalStatus0,
+            "total_status_1" => $totalStatus1,
         ];
     }
 }

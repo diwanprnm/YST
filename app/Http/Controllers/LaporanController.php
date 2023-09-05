@@ -6,13 +6,21 @@ use Illuminate\Http\Request;
 
 class laporanController extends Controller
 {
-    public function getLaporan()
+    public function getLaporan(Request $request)
     {
-        $laporan = Laporan::all();
-        return [
-        "status" => 1,
-        "data" => $laporan
-    ];       
+        $bulan = $request->input('bulan'); // Bulan yang diberikan dari frontend
+        $status = $request->input('status'); // Status yang diberikan dari frontend (0 atau 1)
+    
+        // Lakukan query untuk menghitung total pemasukan berdasarkan $bulan dan $status
+        $totalPemasukan = Laporan::whereMonth('tanggal', $bulan)
+            ->where('status', $status)
+            ->sum('nominal');
+    
+        return response()->json([
+            'status' => 1,
+            'totalPemasukan' => $totalPemasukan,
+        ]);
+           
     }
 
     public function CreatePemasukan(Request $request)

@@ -15,7 +15,7 @@ use Carbon\Carbon;
 class ProgramDonasiController extends Controller
 {
     public function getProgramDonasi(Request $request)
-    {
+{
     $status = $request->input('status_program_donasi');
 
     $query = ProgramDonasi::query();
@@ -30,18 +30,29 @@ class ProgramDonasiController extends Controller
         return $item;
     });
 
+    // Menghitung jumlah status_program_donasi 0
+    $totalStatus0 = $data->where('status_program_donasi', 0)->count();
+
+    // Menghitung jumlah status_program_donasi 1
+    $totalStatus1 = $data->where('status_program_donasi', 1)->count();
+
     if ($status !== null) {
         return [
             "status" => 1,
-            "filtered_data" => $data
+            "filtered_data" => $responseData,
+            "total_status_0" => $totalStatus0,
+            "total_status_1" => $totalStatus1,
         ];
     } else {
         return [
             "status" => 1,
-            "data" => $data
+            "data" => $responseData,
+            "total_status_0" => $totalStatus0,
+            "total_status_1" => $totalStatus1,
         ];
     }
 }
+
 
     public function getLaporanProgramDonasi()
     {

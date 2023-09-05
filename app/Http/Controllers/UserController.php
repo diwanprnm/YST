@@ -18,8 +18,11 @@ class UserController extends Controller
     {
         
         $user = User::where('status_user' ,'y')->get();
+        $totalData = $user->count();
+
         return [
             "status" => 1,
+            "total_data" => $totalData,
             "data" => $user
         ];
     }

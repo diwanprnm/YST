@@ -9,8 +9,11 @@ class MeninggalController extends Controller
     public function getMeninggal()
     {
         $meninggal = Meninggal::all();
+        $totalData = $meninggal->count();
+
         return [
         "status" => 1,
+        "total_data" => $totalData,
         "data" => $meninggal
     ];       
     }
