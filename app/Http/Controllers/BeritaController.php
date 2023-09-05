@@ -22,14 +22,24 @@ class BeritaController extends Controller
         
     }
 
-     public function getArtikel(Request $request)
+    public function getArtikel(Request $request)
 {
     $status = $request->input('status_berita');
-
+    $kategori = $request->input('kategori_berita');
+    $id = $request->input('id_berita'); // Menambahkan input id_berita
+    
     $query = Berita::query();
 
     if ($status !== null) {
         $query->where('status_berita', $status);
+    }
+    
+    if ($kategori !== null) {
+        $query->where('kategori_berita', $kategori);
+    }
+    
+    if ($id !== null) {
+        $query->where('id_berita', $id); // Menambahkan filter berdasarkan ID
     }
 
     $data = $query->get();
@@ -47,7 +57,7 @@ class BeritaController extends Controller
     return $response;
 }
 
-
+    
 
 
 
