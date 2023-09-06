@@ -23,11 +23,15 @@ class DonasiController extends Controller
     public function getDonasi(Request $request)
     {
     $status = $request->input('status_donasi');
+    $id = $request->input('id_donasi');
 
     $query = Donasi::query();
 
     if ($status !== null) {
         $query->where('status_donasi', $status);
+    }
+    if ($id !== null) {
+        $query->where('id_donasi', $id);
     }
 
     $data = $query->get();

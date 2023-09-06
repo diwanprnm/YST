@@ -6,14 +6,26 @@ use Illuminate\Http\Request;
 
 class PlafonBeasiswaController extends Controller
 {
-    public function getPlafonBeasiswa()
+    public function getPlafonBeasiswa(Request $request)
     {
         
-        $data = PlafonBeasiswa::all();
-        return [
-            "status" => 1,
-            "data" => $data
-        ];
+        $id = $request->input('id'); // Menambahkan input id_berita
+            
+            $query = PlafonBeasiswa::query();
+            
+            if ($id !== null) {
+                $query->where('id', $id); // Menambahkan filter berdasarkan ID
+            }
+        
+            $data = $query->get();
+            $response = [
+                "status" => 1,
+                "data" => $data,
+        
+            ];
+        
+            return $response;
+    
     }
 
     public function updatePlafonBeasiswa(Request $request,$id)

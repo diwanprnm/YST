@@ -6,14 +6,29 @@ use Illuminate\Http\Request;
 
 class KategoriDonasiController extends Controller
 {
-    public function getKategoriDonasi()
+    public function getKategoriDonasi(Request $request)
     {
         
-        $data = KategoriDonasi::all();
-        return [
-            "status" => 1,
-            "data" => $data
-        ];
+        
+            $id = $request->input('id_kat_donasi'); // Menambahkan input id_berita
+            
+            $query = KategoriDonasi::query();
+            
+            if ($id !== null) {
+                $query->where('id_kat_donasi', $id); // Menambahkan filter berdasarkan ID
+            }
+        
+            $data = $query->get();
+            $response = [
+                "status" => 1,
+                "data" => $data,
+        
+            ];
+        
+            return $response;
+    
+        
+        
     }
     
     public function CreateKategoriDonasi(Request $request)

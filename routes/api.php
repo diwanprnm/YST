@@ -137,6 +137,7 @@ Route::middleware('auth:sanctum')->group( function () {
             Route::patch('/beasiswa/approve/{id}', [BeasiswaController::class, 'approveBeasiswa']);
             
             
+            Route::get('/kelolaKonten', [BerandaController::class, 'getBeranda']);
             Route::post('/kelolaKonten', [BerandaController::class, 'createOrUpdateBeranda']);
             
             Route::patch('/donasi/approve/{id}', [DonasiController::class, 'approveDonasi']);

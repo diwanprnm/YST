@@ -8,20 +8,36 @@ class laporanController extends Controller
 {
     public function getLaporan(Request $request)
     {
+        $id_laporan = $request->input('id_lap_keuangan'); // ID laporan yang diberikan dari frontend
         $bulan = $request->input('bulan'); // Bulan yang diberikan dari frontend
         $status = $request->input('status'); // Status yang diberikan dari frontend (0 atau 1)
     
-        // Lakukan query untuk menghitung total pemasukan berdasarkan $bulan dan $status
-        $totalPemasukan = Laporan::whereMonth('tanggal', $bulan)
-            ->where('status', $status)
-            ->sum('nominal');
+        // Lakukan query untuk menghitung total pemasukan berdasarkan $bulan, $status, dan $id_laporan
+        $query = Laporan::query();
+    
+        if ($bulan !== null) {
+            $query->whereMonth('tanggal', $bulan);
+        }
+    
+        if ($status !== null) {
+            $query->where('status', $status);
+        }
+    
+        if ($id_laporan !== null) {
+            $query->where('id_lap_keuangan', $id_laporan);
+        }
+    
+        $totalPemasukan = $query->sum('nominal');
+        $dataPemasukan = $query->get(); // Ambil data pemasukan yang sesuai dengan filter
     
         return response()->json([
             'status' => 1,
             'totalPemasukan' => $totalPemasukan,
+            'dataPemasukan' => $dataPemasukan,
         ]);
-           
     }
+    
+
 
     public function CreatePemasukan(Request $request)
     {

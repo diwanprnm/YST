@@ -14,6 +14,28 @@ use Illuminate\Support\Facades\File;
         class BerandaController extends Controller
         {
         
+            public function getBeranda(Request $request){
+        
+                $id = $request->input('id_banner'); // Menambahkan input id_berita
+                
+                $query = Beranda::query();
+                
+                if ($id !== null) {
+                    $query->where('id_banner', $id); // Menambahkan filter berdasarkan ID
+                }
+            
+                $data = $query->get();
+                $response = [
+                    "status" => 1,
+                    "data" => $data,
+            
+                ];
+            
+                return $response;
+        
+            
+            }
+
 
             public function createOrUpdateBeranda(Request $request)
                 {

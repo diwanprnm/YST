@@ -18,11 +18,15 @@ class RelawanController extends Controller
     public function getRelawan(Request $request)
     {
     $status = $request->input('status_relawan');
+    $id = $request->input('id_relawan');
 
     $query = Relawan::query();
 
     if ($status !== null) {
         $query->where('status_relawan', $status);
+    }
+    if ($id !== null) {
+        $query->where('id_relawan', $id);
     }
 
     $data = $query->get();

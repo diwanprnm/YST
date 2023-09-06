@@ -10,12 +10,26 @@ use Illuminate\Support\Facades\Auth;
 
 class BeasiswaController extends Controller
 {
-    public function getBeasiswa(){
-        $beasiswa = Beasiswa::all();
-        return [
+    public function getBeasiswa(Request $request){
+        
+        $id = $request->input('id_beasiswa'); // Menambahkan input id_berita
+        
+        $query = Beasiswa::query();
+        
+        if ($id !== null) {
+            $query->where('id_beasiswa', $id); // Menambahkan filter berdasarkan ID
+        }
+    
+        $data = $query->get();
+        $response = [
             "status" => 1,
-            "data" => $beasiswa
+            "data" => $data,
+    
         ];
+    
+        return $response;
+
+    
     }
 
     public function CreateBeasiswa(Request $request)

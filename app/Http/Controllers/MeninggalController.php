@@ -6,16 +6,31 @@ use Illuminate\Http\Request;
 
 class MeninggalController extends Controller
 {
-    public function getMeninggal()
+    public function getMeninggal(Request $request)
     {
-        $meninggal = Meninggal::all();
-        $totalData = $meninggal->count();
+        $id = $request->input('id_meninggal'); // Menambahkan input id_berita
+            
+        $query = Meninggal::query();
+        
+        if ($id !== null) {
+            $query->where('id_meninggal', $id); // Menambahkan filter berdasarkan ID
+        }
+    
+        $totalData = $query->count();
+        $data = $query->get();
 
-        return [
-        "status" => 1,
-        "total_data" => $totalData,
-        "data" => $meninggal
-    ];       
+        $response = [
+            "status" => 1,
+            "data" => $data,
+            "total_data" => $totalData,
+
+    
+        ];
+    
+        return $response;
+
+
+        
     }
 
     public function CreateMeninggal(Request $request)

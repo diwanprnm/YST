@@ -6,14 +6,26 @@ use Illuminate\Http\Request;
 
 class KategoriRelawanController extends Controller
 {
-    public function getKategoriRelawan()
+    public function getKategoriRelawan(Request $request)
     {
         
-        $data = KategoriRelawan::all();
-        return [
+        $id = $request->input('id_kat_relawan'); // Menambahkan input id_berita
+            
+        $query = KategoriRelawan::query();
+        
+        if ($id !== null) {
+            $query->where('id_kat_relawan', $id); // Menambahkan filter berdasarkan ID
+        }
+    
+        $data = $query->get();
+        $response = [
             "status" => 1,
-            "data" => $data
+            "data" => $data,
+    
         ];
+    
+        return $response;
+
     }
     
     public function CreateKategoriRelawan(Request $request)

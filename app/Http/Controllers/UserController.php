@@ -14,18 +14,28 @@ class UserController extends Controller
     }
 
 
-    public function getUserAktif()
+    public function getUserAktif(Request $request)
     {
+        $id = $request->input('id'); // Menambahkan input id_berita
+                
+        $query = User::where('status_user', 'y');
         
-        $user = User::where('status_user' ,'y')->get();
-        $totalData = $user->count();
-
-        return [
+        if ($id !== null) {
+            $query->where('id', $id); // Menambahkan filter berdasarkan ID
+        }
+    
+        $totalData = $query->count();
+        $data = $query->get();
+    
+        $response = [
             "status" => 1,
+            "data" => $data,
             "total_data" => $totalData,
-            "data" => $user
         ];
+    
+        return response()->json($response); // Mengirimkan respons dalam format JSON
     }
+    
 
     public function updateUser(Request $request,  $id)
     {
