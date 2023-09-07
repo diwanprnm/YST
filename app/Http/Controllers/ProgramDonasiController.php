@@ -128,7 +128,6 @@ public function getProgramDonasiPaginate(Request $request)
             'deskripsi_singkat_donasi' => 'required',
             'deskripsi_lengkap_donasi' => 'required',
             'target_dana' => 'required',
-            'deskripsi_lengkap_donasi' => 'required',
             'tgl_selesai' => 'required',
             'tgl_pdonasi' => 'required',
             'penanggung_jawab' => 'required',
