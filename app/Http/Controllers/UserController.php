@@ -44,7 +44,6 @@ class UserController extends Controller
 
         $request->validate([
             'no_hp' => 'required',
-            'jenis_kelamin' => 'required',
             'file_keluarga' => 'required',
             'nik' => 'required',
             'username' => 'required',
@@ -56,7 +55,7 @@ class UserController extends Controller
         
         $user = User::find($id);
         $user->nik = $request->nik;
-        $user->nama = $request->nama;
+        $user->name = $request->name;
         $user->no_hp = $request->no_hp;
         $user->email = $request->email;
         $user->level_user = $request->level_user;
