@@ -15,7 +15,14 @@ class BeasiswaController extends Controller
         $id = $request->input('id_beasiswa'); // Menambahkan input id_berita
         
         $query = Beasiswa::query();
-        
+
+        $query->join('t_meninggal', 't_beasiswa.user_nik', '=', 't_meninggal.nik');
+    
+        // Menambahkan kolom 'nama' dari tabel t_meninggal ke hasil kueri
+        $query->addSelect([
+            't_beasiswa.*', // Menampilkan semua kolom dari tabel t_beasiswa
+            't_meninggal.nama as nama', // Kolom 'nama' dari tabel t_meninggal
+        ]);
         if ($id !== null) {
             $query->where('id_beasiswa', $id); // Menambahkan filter berdasarkan ID
         }

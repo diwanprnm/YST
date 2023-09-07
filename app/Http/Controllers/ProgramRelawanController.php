@@ -78,6 +78,7 @@ class ProgramRelawanController extends Controller
             'deskripsi_lengkap_relawan' => 'required',
             'target_relawan' => 'required',
             'tgl_pelaksanaan' => 'required',
+            'tgl_prelawan' => 'required',
             'penanggung_jawab' => 'required',
             'tenggat_waktu' => 'required',
             'lokasi_awal' => 'required',
@@ -116,6 +117,7 @@ class ProgramRelawanController extends Controller
                 'tenggat_waktu' => 'required',
                 'kategori_relawan' => 'required',
                 'lokasi_awal' => 'required',
+                'tgl_prelawan' => 'required',
 
                 
                 
@@ -128,6 +130,7 @@ class ProgramRelawanController extends Controller
             $data->tenggat_waktu = $request->tenggat_waktu;
             $data->lokasi_awal = $request->lokasi_awal;
             $data->tgl_pelaksanaan = $request->tgl_pelaksanaan;
+            $data->tgl_prelawan = $request->tgl_prelawan;
             $data->penanggung_jawab = $request->penanggung_jawab;
             $data->tenggat_waktu = $request->tenggat_waktu;
             $data->kategori_relawan = $request->kategori_relawan;
