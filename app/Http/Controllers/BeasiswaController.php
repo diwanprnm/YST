@@ -4,40 +4,67 @@ namespace App\Http\Controllers;
 
 use App\Models\Beasiswa;
 use App\Models\AproveBeasiswa;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 
 class BeasiswaController extends Controller
 {
     public function getBeasiswa(Request $request){
-        
-        $id = $request->input('id_beasiswa'); // Menambahkan input id_berita
+        $id = $request->input('id_beasiswa');
         
         $query = Beasiswa::query();
-
+        
         $query->join('t_meninggal', 't_beasiswa.user_nik', '=', 't_meninggal.nik');
-    
-        // Menambahkan kolom 'nama' dari tabel t_meninggal ke hasil kueri
+        $query->join('t_approval_beasiswa', 't_beasiswa.id_beasiswa', '=', 't_approval_beasiswa.beasiswa_id');
+        $query->leftJoin('users', 't_approval_beasiswa.user_id', '=', 'users.id');
+        
         $query->addSelect([
-            't_beasiswa.*', // Menampilkan semua kolom dari tabel t_beasiswa
-            't_meninggal.nama as nama', // Kolom 'nama' dari tabel t_meninggal
-        ]);
+            't_beasiswa.*',
+            't_meninggal.nama as nama_pengajuan_beasiswa',
+            DB::raw('(SELECT COUNT(*) FROM t_approval_beasiswa WHERE t_approval_beasiswa.beasiswa_id = t_beasiswa.id_beasiswa) as jumlah_peng_approve')
+        ]); 
+        
         if ($id !== null) {
-            $query->where('id_beasiswa', $id); // Menambahkan filter berdasarkan ID
+            $query->where('id_beasiswa', $id);
         }
-    
+        
         $data = $query->get();
+        
+        $uniqueData = []; // Array untuk menyimpan data unik berdasarkan "id_beasiswa"
+        
+        foreach ($data as $beasiswa) {
+            // Menyimpan data ke dalam array dengan "id_beasiswa" sebagai kunci
+            $uniqueData[$beasiswa->id_beasiswa] = $beasiswa;
+        }
+        
+        // Mengonversi kembali array asosiatif ke dalam format JSON
+        $uniqueData = array_values($uniqueData);
+        
+        foreach ($uniqueData as $beasiswa) {
+            $beasiswa->approval = AproveBeasiswa::where('beasiswa_id', $beasiswa->id_beasiswa)->get(['keterangan', 'user_id']);
+            
+            foreach ($beasiswa->approval as $approval) {
+                $user = User::find($approval->user_id);
+                if ($user) {
+                    $approval->nama_approve = $user->name;
+                }
+            }
+        }
+        
+        
         $response = [
             "status" => 1,
-            "data" => $data,
-    
+            "data" => $uniqueData, // Menggunakan data yang sudah tidak memiliki duplikat
         ];
-    
+        
         return $response;
-
-    
     }
+    
+    
 
     public function CreateBeasiswa(Request $request)
     {
