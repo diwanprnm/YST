@@ -45,7 +45,7 @@ class BeasiswaController extends Controller
         $uniqueData = array_values($uniqueData);
         
         foreach ($uniqueData as $beasiswa) {
-            $beasiswa->approval = AproveBeasiswa::where('beasiswa_id', $beasiswa->id_beasiswa)->get(['keterangan', 'user_id']);
+            $beasiswa->approval = AproveBeasiswa::where('beasiswa_id', $beasiswa->id_beasiswa)->get(['user_id','id_approval','keterangan']);
             
             foreach ($beasiswa->approval as $approval) {
                 $user = User::find($approval->user_id);
