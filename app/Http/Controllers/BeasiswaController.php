@@ -19,7 +19,7 @@ class BeasiswaController extends Controller
         $query = Beasiswa::query();
         
         $query->join('t_meninggal', 't_beasiswa.user_nik', '=', 't_meninggal.nik');
-        $query->join('t_approval_beasiswa', 't_beasiswa.id_beasiswa', '=', 't_approval_beasiswa.beasiswa_id');
+        $query->leftJoin('t_approval_beasiswa', 't_beasiswa.id_beasiswa', '=', 't_approval_beasiswa.beasiswa_id');
         $query->leftJoin('users', 't_approval_beasiswa.user_id', '=', 'users.id');
         
         $query->addSelect([
