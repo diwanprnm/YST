@@ -61,22 +61,23 @@ class RegisterController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-    
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = $user->createToken('MyApp')->plainTextToken;
-    
-            return response()->json([
-                'message' => 'Login berhasil',
-                'token' => $token,
-                'name' => $user->name,
-                'level_user' => $user->level_user
-            ]);
-        } else {
+
+        if(!Auth::attempt($credentials)){
             return response()->json([
                 'message' => 'Login gagal',
             ], 401);
         }
+
+        $user = User::where('email',$request->email)->first();
+        $token = $user->createToken('MyApp')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Login berhasil',
+            'token' => $token,
+            'name' => $user->name,
+            'level_user' => $user->level_user
+        ]);
+
     }
     
     public function logout(Request $request)
